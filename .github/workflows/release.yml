@@ -5,13 +5,15 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  contents: write # to be able to publish a GitHub release
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,7 +21,7 @@ jobs:
           node-version: '20'
       - name: Install semantic-release
         run: npm install -g semantic-release @semantic-release/github
-      - name: Install conventional-commits
+      - name: Install conventionalcommits
         run: npm install -D conventional-changelog-conventionalcommits
       - name: Release
         env:
