@@ -1,3 +1,4 @@
+# Uses https://github.com/semantic-release/semantic-release
 name: Release new version
 run-name: Release code @ ${{ github.sha }}
 on:
@@ -18,6 +19,8 @@ jobs:
           node-version: '20'
       - name: Install semantic-release
         run: npm install -g semantic-release @semantic-release/github
+      - name: Install conventional-commits
+        run: npm install -D conventional-changelog-conventionalcommits
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
