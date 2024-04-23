@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Terraform format check
-        uses: docker://hashicorp/terraform:1.7.5 fmt -recursive -check
+        uses: ./.github/actions/terraform-fmt
