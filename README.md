@@ -216,22 +216,31 @@ For local development it is recommended to use a `pre-commit` hook to detect for
 ```sh
 #!/bin/sh
 
-if command -v terraform &> /dev/null
+# Short-circuit if terraform not found
+if ! command -v terraform &> /dev/null
 then
-    FORMAT_CHECK=$(terraform fmt -check -recursive)
-    FORMAT_RC=$?
-    if [ $FORMAT_RC -gt 0 ]
-        then
-            printf "\033[1;31mThe following files need to be formatted:\033[m\n"
-            for f in $FORMAT_CHECK; do
-                echo $f
-            done
-            printf "Run \033[1;32mterraform fmt -recursive\033[m to fix\n" 
-        exit $FORMAT_RC
-    fi
-else
     echo "Terraform executable was not found in $PATH"
     exit 1
+fi
+
+FORMAT_CHECK=$(terraform fmt -check -recursive 2>&1)
+FORMAT_RC=$?
+
+if echo $FORMAT_CHECK | grep -q "Error"
+then
+    # Iterate over lines of $FORMAT_CHECK
+    while IFS= read -r f; do
+        echo "$f"
+    done <<< "$FORMAT_CHECK"
+    exit $FORMAT_RC
+elif [ $FORMAT_RC -gt 0 ]
+then
+    printf "\033[1;31mThe following files need to be formatted:\033[m\n"
+    for f in $FORMAT_CHECK; do
+        echo $f
+    done
+    printf "Run \033[1;32mterraform fmt -recursive\033[m to fix\n"
+    exit "$FORMAT_RC"
 fi
 ```
 
