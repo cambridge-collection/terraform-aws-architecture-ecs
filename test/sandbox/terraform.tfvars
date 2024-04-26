@@ -1,0 +1,10 @@
+project                        = "CUDL"
+component                      = "cudl-data-workflows"
+subcomponent                   = "cudl-content-loader"
+cluster_name_suffix            = "ccc"
+registered_domain_name         = "cudl-sandbox.net."
+route53_delegation_set_id      = "N02288771HQRX5TRME6CM"
+route53_zone_force_destroy     = true
+alb_enable_deletion_protection = false
+vpc_public_subnet_public_ip    = false
+cloudwatch_log_group           = "/ecs/CUDLContent"
