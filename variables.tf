@@ -75,6 +75,12 @@ variable "ami_name_prefix" {
   default     = "amzn2-ami-ecs-hvm-2.0*"
 }
 
+variable "ami_architecture" {
+  type        = string
+  description = "Name of the OS Architecture. Note must be compatible with the selected EC2 Instance Type"
+  default     = "x86_64"
+}
+
 variable "ec2_keypair" {
   type        = string
   description = "Name of EC2 Keypair for SSH access to EC2 instances"

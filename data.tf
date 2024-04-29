@@ -11,12 +11,18 @@ data "aws_ec2_managed_prefix_list" "s3" {
 }
 
 data "aws_ami" "ecs_ami" {
-  owners = ["591542846629"] # AWS Managed
+  owners      = ["591542846629"] # AWS Managed
+  most_recent = true
+
   filter {
     name   = "name"
     values = [var.ami_name_prefix]
   }
-  most_recent = true
+
+  filter {
+    name   = "architecture"
+    values = [var.ami_architecture]
+  }
 }
 
 data "aws_cloudwatch_log_group" "this" {
