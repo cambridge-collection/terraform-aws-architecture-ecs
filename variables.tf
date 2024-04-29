@@ -55,6 +55,12 @@ variable "s3_bucket_versioning_enabled" {
   default     = true
 }
 
+variable "s3_bucket_force_destroy" {
+  type        = bool
+  description = "Whether to allow a non-empty bucket to be destroyed"
+  default     = false
+}
+
 variable "ami_name_prefix" {
   type        = string
   description = "Prefix used to find an AMI for use in the Launch Template"
