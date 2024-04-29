@@ -36,17 +36,25 @@ variable "vpc_endpoint_services" {
 variable "route53_zone_domain_name" {
   type        = string
   description = "Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored"
+  default     = null
 }
 
 variable "route53_delegation_set_id" {
   type        = string
   description = "The ID of the reusable delegation set whose NS records should be assigned to the hosted zone"
+  default     = null
 }
 
 variable "route53_zone_force_destroy" {
   type        = bool
   description = "Whether to destroy the Route 53 Zone although records may still exist"
   default     = false
+}
+
+variable "route53_zone_id_existing" {
+  type        = string
+  description = "ID of an existing Route 53 Hosted zone as an alternative to creating a hosted zone"
+  default     = null
 }
 
 variable "s3_bucket_versioning_enabled" {

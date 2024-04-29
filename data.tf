@@ -26,3 +26,9 @@ data "aws_cloudwatch_log_group" "this" {
 data "aws_kms_alias" "ebs" {
   name = "alias/aws/ebs"
 }
+
+data "aws_route53_zone" "existing" {
+  count = var.route53_zone_id_existing != null ? 1 : 0
+
+  zone_id = var.route53_zone_id_existing
+}

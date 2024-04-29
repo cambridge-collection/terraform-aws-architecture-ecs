@@ -44,7 +44,7 @@ output "asg_security_group_id" {
 }
 
 output "route53_public_hosted_zone" {
-  value       = aws_route53_zone.public.id
+  value       = coalescelist(data.aws_route53_zone.existing.*.id, aws_route53_zone.public.*.id)[0]
   description = "Zone ID of the Route 53 Public Hosted Zone"
 }
 
