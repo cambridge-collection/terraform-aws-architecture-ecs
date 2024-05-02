@@ -23,6 +23,11 @@ output "alb_arn" {
   description = "ARN of the Application Load Balancer"
 }
 
+output "alb_https_listener_arn" {
+  value       = aws_lb_listener.https.arn
+  description = "ARN of the default Application Load Balancer Listener on port 443"
+}
+
 output "alb_dns_name" {
   value       = aws_lb.this.dns_name
   description = "DNS Name of the Application Load Balancer"
