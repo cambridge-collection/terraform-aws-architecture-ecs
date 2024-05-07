@@ -21,3 +21,26 @@ resource "aws_lb" "this" {
     }
   }
 }
+
+# NOTE see section "Note about Load Balancer Listener" in README.md
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.this.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = var.alb_listener_ssl_policy
+  certificate_arn   = aws_acm_certificate.default.arn
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = var.alb_listener_fixed_response_content_type
+      message_body = var.alb_listener_fixed_response_message_body
+      status_code  = var.alb_listener_fixed_response_status_code
+    }
+  }
+
+  tags = {
+    Name = "${var.name_prefix}-alb-default-listener"
+  }
+}

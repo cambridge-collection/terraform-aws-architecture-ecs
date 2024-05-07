@@ -204,6 +204,30 @@ variable "alb_enable_deletion_protection" {
   default     = true
 }
 
+variable "alb_listener_ssl_policy" {
+  type        = string
+  description = "TLS security policy used by the default ALB Listener"
+  default     = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+}
+
+variable "alb_listener_fixed_response_content_type" {
+  type        = string
+  description = "Default content type for the fixed response of the default ALB Listener"
+  default     = "text/html"
+}
+
+variable "alb_listener_fixed_response_message_body" {
+  type        = string
+  description = "Default message body for the fixed response of the default ALB Listener"
+  default     = "<!DOCTYPE html><body><h1>Hello World!</h1></body>"
+}
+
+variable "alb_listener_fixed_response_status_code" {
+  type        = string
+  description = "Default status code for the fixed response of the default ALB Listener"
+  default     = "200"
+}
+
 variable "cloudwatch_log_group" {
   type        = string
   description = "Name of the cloudwatch log group"
