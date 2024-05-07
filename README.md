@@ -4,7 +4,7 @@ This Terraform module builds the base AWS infrastructure needed to support ECS S
 
 The module will by default build an Auto Scaling Group in private subnets. VPC Endpoints create links to AWS services that will allow the ECS Services to run, as well as accessing ECR repositories.
 
-By default the `ec2_keypair` variable is null, and no Security Group rules allow for SSH access. EC2 instances can be accessed using AWS Session Manager. 
+By default the `ec2_keypair` input is null, and no Security Group rules allow for SSH access. EC2 instances can be accessed using AWS Session Manager. 
 
 In order to provide a running ECS Service, a child module will need to build it's own ECS Service and ECS Task Definition objects, in addition to an ECR Repository. It will not be possible to use publicly available container images as instances in private subnets will have no outbound route to the internet.
 
@@ -154,9 +154,11 @@ No modules.
 
 ## Note about Route 53 Hosted Zone
 
-The name of the Route 53 Hosted Zone needs to match the value of a registered domain name. This registered domain has been created manually in the AWS Route 53 Console. There is an option to manage a registered domain in Terraform, but we feel it is best to avoid unintended to changes to the domain and this has been intentionally omitted from the configuration.
+The name of the Route 53 Hosted Zone needs to match the value of a registered domain name. There is an option to manage an AWS registered domain in Terraform, but we feel it is best to avoid unintended to changes to the domain and this has been intentionally omitted from the configuration.
 
-The registered domain specifies Name Servers which are used to resolve DNS queries for addresses in the domain. These can be set to the name servers created by a Route 53 Hosted Zone. However, given the hosted zone is managed by Terraform and may be replaced or destroyed, particularly in a sandbox environment, this could lead to frequent changes to the registered domain name servers. These would need to be made manually.
+This module is able to optionally build a Route 53 hosted zone, or to look up an existing hosted zone using the input `route53_zone_id_existing`.
+
+In AWS a Registered Domain specifies Name Servers which are used to resolve DNS queries for addresses in the domain. These can be set to the name servers created by a Route 53 Hosted Zone. However, given the hosted zone is managed by Terraform and may be replaced or destroyed, particularly in a sandbox environment, this could lead to frequent changes to the registered domain name servers. These would need to be made manually.
 
 To avoid this, it is possible to create a Delegation Set to act as a bridge between the registered domain and the Route 53 Hosted Zone. To avoid this also changing frequently, it should be created outside Terraform. This can be done with the AWS CLI.
 
@@ -164,7 +166,9 @@ To avoid this, it is possible to create a Delegation Set to act as a bridge betw
 aws route53 create-reusable-delegation-set --caller-reference "$(date +"%s")"
 ```
 
-This will output an Id attribute in the format "/delegationset/N10230772EN8U28YG7Z00". The second part of this ID (the unique reference) should be passed to the route53_delegation_set_id input for this module. When the Route 53 Hosted Zone is created it will use the name servers specified in the delegation set. When the registered domain is updated to use the name servers listed in the output for the command above, this will allow the hosted zone to be changed without needing to update the name server details again.
+This will output an Id attribute in the format "/delegationset/N10230772EN8U28YG7Z00". The second part of this ID (the unique reference) can be passed to the route53_delegation_set_id input for this module. If a Route 53 Hosted Zone is created by this module it is able to use the name servers specified in the delegation set. When the registered domain is updated to use the name servers listed in the output for the command above, this will allow the hosted zone to be changed without needing to update the name server details again.
+
+Note that it is not possible to have two Route 53 hosted zones using the same domain name and the same name servers. A delegation set can only be used with a set of unique domain names.
 
 ## Note about Auto Scaling Group Health Check Type
 
@@ -175,7 +179,33 @@ Using the ELB health check type has some implications:
 - Initially, it this module is built without any dependent service there will be no way of fulfilling the ASG health check as there will be no target groups. This will lead to continuous instance cycling.
 - Where multiple dependent services have been built on top of the same implementation of this module, the failure of one of these services will fail them all. This will impact otherwise healthy services.
 
-The default value for the `asg_health_check_type` variable has therefore been set to `EC2`. For implementations with a small number of stable services the value of `ELB` may be preferred as this provides a truer reflection of service health.
+The default value for the `asg_health_check_type` input has therefore been set to `EC2`. For implementations with a small number of stable services the value of `ELB` may be preferred as this provides a truer reflection of service health.
+
+## Note about Load Balancer Listener
+
+AWS does not permit multiple listeners on the same Load Balancer using the same port. This could mean that only one target was available on the default HTTPs port 443. A solution to this is to generate a "default" load balancer listener assigned to port 443. The output `alb_https_listener_arn` allows dependent modules to build their own `aws_lb_listener_rule` resources referring to the ARN of the listener. This allows a single port to front several targets, using rules to determine the correct target.
+
+An implementation of this could use the host_header condition to route requests using the value of the Host header sent by the client (note this header will be automatically inserted by most HTTP user agents such as curl). For example:
+
+```hcl
+resource "aws_lb_listener_rule" "this" {
+  listener_arn = var.alb_listener_arn
+  priority     = var.alb_listener_rule_priority
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
+  }
+
+  condition {
+    host_header {
+      values = [aws_route53_record.this.name]
+    }
+  }
+}
+```
+
+The certificate `aws_acm_certificate.default` in this module has no corresponding Route 53 A record - therefore requests to the domain name of the certificate will fail. This is by design. It is not possible to create a Load Balancer listener using the HTTPs protocol without referring to a certificate, and the resource here allows this. The domain name of the default certificate is not output by this module as it is not intended for re-use. 
 
 ## GitHub Workflows
 

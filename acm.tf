@@ -3,6 +3,7 @@ locals {
   default_domain_name      = lower(trim(substr(join(".", ["default", var.name_prefix, local.route53_zone_domain_name]), -64, -1), ".-"))
 }
 
+# NOTE see section "Note about Load Balancer Listener" in README.md
 resource "aws_acm_certificate" "default" {
   domain_name = local.default_domain_name
   subject_alternative_names = [

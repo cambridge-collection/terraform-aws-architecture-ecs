@@ -22,6 +22,7 @@ resource "aws_lb" "this" {
   }
 }
 
+# NOTE see section "Note about Load Balancer Listener" in README.md
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.this.arn
   port              = 443
