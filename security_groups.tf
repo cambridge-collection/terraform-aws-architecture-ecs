@@ -46,16 +46,6 @@ resource "aws_security_group_rule" "alb_ingress_cloudfront" {
   prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
 }
 
-resource "aws_security_group_rule" "asg_egress_s3" {
-  type              = "egress"
-  protocol          = "tcp"
-  description       = "Egress to S3 for ${var.name_prefix}"
-  security_group_id = aws_security_group.asg.id
-  from_port         = 443
-  to_port           = 443
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.s3.id]
-}
-
 resource "aws_security_group_rule" "vpc_endpoint_ingress_self" {
   type              = "ingress"
   protocol          = "tcp"
@@ -74,4 +64,14 @@ resource "aws_security_group_rule" "vpc_endpoint_egress_self" {
   from_port         = 443
   to_port           = 443
   self              = true
+}
+
+resource "aws_security_group_rule" "vpc_endpoints_egress_s3" {
+  type              = "egress"
+  protocol          = "tcp"
+  description       = "Egress to S3 for ${var.name_prefix}"
+  security_group_id = aws_security_group.vpc_endpoints.id
+  from_port         = 443
+  to_port           = 443
+  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.s3.id]
 }
