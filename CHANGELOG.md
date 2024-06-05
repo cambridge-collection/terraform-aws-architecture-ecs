@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.0.0...v1.1.0) (2024-06-05)
+
+
+### Features
+
+* **alb:** Add default HTTPS ALB Listener ([c55c1a0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/c55c1a0a8580d874823aff2b4bebd0ea29962aeb))
+* **outputs:** Add ECS Cluster name output ([1be6d15](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/1be6d152eb4e63383aa2f0e46db7e14daac0860c))
+* **outputs:** Add subnet id outputs ([8bfe8c3](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/8bfe8c35c984ecbeb7bb4889de2d142f9575532e))
+* **security-group:** Allow egress to S3 on VPC endpoints security group ([f2101ec](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/f2101ec46496f335dd6853270423dbe4ca1f4559))
+
 ## 1.0.0 (2024-04-30)
 
 
