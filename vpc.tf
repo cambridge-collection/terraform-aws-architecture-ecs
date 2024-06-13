@@ -255,10 +255,10 @@ resource "aws_vpc_peering_connection" "this" {
   auto_accept = true
 
   accepter {
-    allow_remote_vpc_dns_resolution = true
+    allow_remote_vpc_dns_resolution = true # Allow requester VPC to resolve DNS of hosts in accepter VPC to private IP addresses
   }
 
   requester {
-    allow_remote_vpc_dns_resolution = false
+    allow_remote_vpc_dns_resolution = false # Allow accepter VPC to resolve DNS of hosts in requester VPC to private IP addresses
   }
 }
