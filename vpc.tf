@@ -252,6 +252,7 @@ resource "aws_vpc_peering_connection" "this" {
 
   peer_vpc_id = aws_vpc.this.id # accepter
   vpc_id      = each.key        # requester
+  auto_accept = true
 
   accepter {
     allow_remote_vpc_dns_resolution = false
