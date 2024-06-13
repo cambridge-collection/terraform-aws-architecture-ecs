@@ -255,10 +255,10 @@ resource "aws_vpc_peering_connection" "this" {
   auto_accept = true
 
   accepter {
-    allow_remote_vpc_dns_resolution = false
+    allow_remote_vpc_dns_resolution = true
   }
 
   requester {
-    allow_remote_vpc_dns_resolution = true
+    allow_remote_vpc_dns_resolution = false
   }
 }
