@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.1.0...v1.2.0) (2024-06-19)
+
+
+### Features
+
+* **vpc-peering:** Add auto_accept argument to aws_vpc_peering_connection.this ([b131199](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/b131199191a5d26a24ee0764dc5a11003a41923e))
+* **vpc-peering:** Add aws_vpc_peering_connection resource ([75fbe71](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/75fbe71ad35022a3e02075f2edaaf000308b5aad))
+* **vpc-peering:** Reverse accepter and requester dns resolution options ([fc1f6d3](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/fc1f6d3d720abb36226572c9f0a97060c9faa891))
+
 ## [1.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.0.0...v1.1.0) (2024-06-05)
 
 
