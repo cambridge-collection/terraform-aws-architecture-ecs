@@ -242,3 +242,23 @@ resource "aws_default_security_group" "this" {
     Name = "default"
   }
 }
+
+################################################################################
+# VPC Peering
+################################################################################
+
+resource "aws_vpc_peering_connection" "this" {
+  for_each = toset(var.vpc_peering_vpc_ids)
+
+  peer_vpc_id = aws_vpc.this.id # accepter
+  vpc_id      = each.key        # requester
+  auto_accept = true
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true # Allow requester VPC to resolve DNS of hosts in accepter VPC to private IP addresses
+  }
+
+  requester {
+    allow_remote_vpc_dns_resolution = false # Allow accepter VPC to resolve DNS of hosts in requester VPC to private IP addresses
+  }
+}

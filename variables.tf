@@ -33,6 +33,12 @@ variable "vpc_endpoint_services" {
   default     = ["ssmmessages", "ssm", "ec2messages", "ecr.api", "ecr.dkr", "ecs", "ecs-agent", "ecs-telemetry", "logs"]
 }
 
+variable "vpc_peering_vpc_ids" {
+  type        = list(string)
+  description = "List of VPC IDS for peering with the VPC"
+  default     = []
+}
+
 variable "route53_zone_domain_name" {
   type        = string
   description = "Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored"
