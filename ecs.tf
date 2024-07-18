@@ -9,12 +9,12 @@ resource "aws_ecs_capacity_provider" "this" {
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.this.arn
-    managed_termination_protection = "DISABLED"
+    managed_termination_protection = var.ecs_capacity_provider_managed_termination_protection
 
     managed_scaling {
       maximum_scaling_step_size = 2
       minimum_scaling_step_size = 1
-      status                    = "ENABLED"
+      status                    = var.ecs_capacity_provider_status
       target_capacity           = var.ecs_capacity_provider_target_capacity_percent
     }
   }
