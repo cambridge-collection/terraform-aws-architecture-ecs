@@ -168,10 +168,22 @@ variable "asg_enabled_metrics" {
   ]
 }
 
+variable "ecs_capacity_provider_status" {
+  type        = string
+  description = "Enables or disables managed scaling on ASG"
+  default     = "ENABLED"
+}
+
 variable "ecs_capacity_provider_target_capacity_percent" {
   type        = number
   description = "Percentage target capacity utilization for the autscaling group instances"
   default     = 100
+}
+
+variable "ecs_capacity_provider_managed_termination_protection" {
+  type        = string
+  description = "Enables or disables container-aware termination of instances in the ASG when scale-in happens"
+  default     = "ENABLED"
 }
 
 variable "alb_internal" {

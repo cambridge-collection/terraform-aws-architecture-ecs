@@ -23,6 +23,11 @@ output "ecs_cluster_arn" {
   description = "ARN of the ECS Cluster"
 }
 
+output "ecs_capacity_provider_name" {
+  value       = aws_ecs_capacity_provider.this.name
+  description = "Name of the ECS Capacity Provider associated with the Autoscaling Group"
+}
+
 output "s3_bucket" {
   value       = aws_s3_bucket.this.id
   description = "Name of the S3 Bucket"
