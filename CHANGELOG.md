@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.2.0...v1.3.0) (2024-07-23)
+
+
+### Features
+
+* **ecs:** Add inputs for ECS capacity provider ([a25cf77](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/a25cf77318c2296bd39d40b8fa3ba2d07a633b68))
+* **outputs:** Add ecs_capacity_provider_name output ([604a2a3](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/604a2a3389042dabcff2e6af261a9b5270d88c3b))
+
 ## [1.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.1.0...v1.2.0) (2024-06-19)
 
 
