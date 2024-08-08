@@ -256,3 +256,9 @@ variable "waf_ip_set_addresses" {
   description = "List of IPs for WAF IP Set Safelist"
   default     = ["131.111.0.0/16"]
 }
+
+variable "eventbridge_monitor_stopped_tasks" {
+  type        = bool
+  description = "Whether to capture details of stopped tasks in AWS EventBridge"
+  default     = true
+}
