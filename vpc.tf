@@ -97,7 +97,10 @@ resource "aws_route_table" "private_a" {
 resource "aws_route_table" "private_b" {
   vpc_id = aws_vpc.this.id
 
-  # NOTE missing route
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_b.id
+  }
 
   tags = {
     Name = "${var.name_prefix}-rtb-private_${data.aws_region.current.name}b"
@@ -222,11 +225,32 @@ resource "aws_nat_gateway" "nat_a" {
   depends_on = [aws_internet_gateway.this]
 }
 
+resource "aws_nat_gateway" "nat_b" {
+  allocation_id = aws_eip.nat_b.id
+  subnet_id     = aws_subnet.public_b.id
+
+  tags = {
+    Name = "${var.name_prefix}-nat-b"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.this]
+}
+
 resource "aws_eip" "nat_a" {
   domain = "vpc"
 
   tags = {
     Name = "${var.name_prefix}-nat-1a-elastic-ip"
+  }
+}
+
+resource "aws_eip" "nat_b" {
+  domain = "vpc"
+
+  tags = {
+    Name = "${var.name_prefix}-nat-1b-elastic-ip"
   }
 }
 
