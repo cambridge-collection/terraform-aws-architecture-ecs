@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.3.0...v1.4.0) (2024-09-05)
+
+
+### Features
+
+* **vpc:** Add NAT gateway in B subnets ([5acedb0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/5acedb0509dff42c67355fd125ce82b0ffa14af0))
+
 ## [1.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.2.0...v1.3.0) (2024-07-23)
 
 
