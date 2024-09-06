@@ -147,6 +147,12 @@ variable "asg_termination_policies" {
   default     = ["OldestLaunchTemplate"]
 }
 
+variable "asg_protect_from_scale_in" {
+  type        = bool
+  description = "Whether newly launched instances are automatically protected from termination"
+  default     = true
+}
+
 variable "asg_metrics_granularity" {
   type        = string
   description = "Granularity of metrics collected by the Autoscaling Group"
