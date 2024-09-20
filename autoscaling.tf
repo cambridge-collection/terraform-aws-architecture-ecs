@@ -15,6 +15,7 @@ resource "aws_autoscaling_group" "this" {
   service_linked_role_arn   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling" // AWS standard role
   metrics_granularity       = var.asg_metrics_granularity
   enabled_metrics           = var.asg_enabled_metrics
+  protect_from_scale_in     = var.asg_protect_from_scale_in
 
   tag {
     key                 = "AmazonECSManaged"
