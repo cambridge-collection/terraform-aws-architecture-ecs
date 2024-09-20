@@ -67,6 +67,7 @@ No modules.
 | [aws_security_group.asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.alb_ingress_cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.asg_egress_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoint_egress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoint_ingress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoints_egress_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -108,6 +109,7 @@ No modules.
 | <a name="input_alb_listener_ssl_policy"></a> [alb\_listener\_ssl\_policy](#input\_alb\_listener\_ssl\_policy) | TLS security policy used by the default ALB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | Name of the OS Architecture. Note must be compatible with the selected EC2 Instance Type | `string` | `"x86_64"` | no |
 | <a name="input_ami_name_prefix"></a> [ami\_name\_prefix](#input\_ami\_name\_prefix) | Prefix used to find an AMI for use in the Launch Template | `string` | `"amzn2-ami-ecs-hvm-2.0*"` | no |
+| <a name="input_asg_allow_all_egress"></a> [asg\_allow\_all\_egress](#input\_asg\_allow\_all\_egress) | Whether to allow EC2 instances in ASG egress to all targets | `bool` | `false` | no |
 | <a name="input_asg_default_cooldown"></a> [asg\_default\_cooldown](#input\_asg\_default\_cooldown) | Number of seconds between scaling activities | `number` | `300` | no |
 | <a name="input_asg_desired_capacity"></a> [asg\_desired\_capacity](#input\_asg\_desired\_capacity) | Desired number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_enabled_metrics"></a> [asg\_enabled\_metrics](#input\_asg\_enabled\_metrics) | List of metrics enabled for the Auotscaling Group | `list(string)` | <pre>[<br>  "GroupTotalInstances",<br>  "GroupInServiceInstances",<br>  "GroupTerminatingInstances",<br>  "GroupPendingInstances",<br>  "GroupInServiceCapacity",<br>  "GroupPendingCapacity",<br>  "GroupTotalCapacity",<br>  "GroupTerminatingCapacity"<br>]</pre> | no |
