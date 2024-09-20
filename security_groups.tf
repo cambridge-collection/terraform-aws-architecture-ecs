@@ -36,6 +36,18 @@ resource "aws_security_group" "vpc_endpoints" {
 # Security Group Rules
 ################################################################################
 
+resource "aws_security_group_rule" "asg_egress_all" {
+  count = var.asg_allow_all_egress ? 1 : 0
+
+  type              = "egress"
+  protocol          = "tcp"
+  description       = "HTTPS outbound access for ${var.name_prefix}"
+  security_group_id = aws_security_group.asg.id
+  from_port         = 443
+  to_port           = 443
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "alb_ingress_cloudfront" {
   type              = "ingress"
   protocol          = "tcp"
