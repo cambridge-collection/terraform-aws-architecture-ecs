@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.5.0...v1.5.1) (2024-09-20)
+
+
+### Bug Fixes
+
+* **asg:** Fix error creating ECS capacity provider ([dec8ff9](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/dec8ff96a3ad757edffefa8ede4d163ff49bc060))
+
 ## [1.5.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.4.0...v1.5.0) (2024-09-20)
 
 
