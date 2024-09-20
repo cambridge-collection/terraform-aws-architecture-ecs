@@ -68,6 +68,11 @@ output "asg_security_group_id" {
   description = "ID of the Security Group for the Auto Scaling Group"
 }
 
+output "vpc_endpoint_security_group_id" {
+  value       = aws_security_group.vpc_endpoints.id
+  description = "ID of the Security Group for VPC Endpoints"
+}
+
 output "route53_public_hosted_zone" {
   value       = coalescelist(data.aws_route53_zone.existing.*.id, aws_route53_zone.public.*.id)[0]
   description = "Zone ID of the Route 53 Public Hosted Zone"
