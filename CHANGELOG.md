@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.5.1...v1.6.0) (2024-09-20)
+
+
+### Features
+
+* **security:** Add aws_security_group_rule.asg_egress_all resource ([df2eae8](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/df2eae8d25395a5967f2872516b7da4a2bbe4b6d))
+
 ## [1.5.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.5.0...v1.5.1) (2024-09-20)
 
 
