@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.4.0...v1.5.0) (2024-09-20)
+
+
+### Features
+
+* **output:** Add vpc_endpoint_security_group_id output ([39b0cda](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/39b0cdab0d8f86d61551ead4121409124e0f5f92))
+
 ## [1.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.3.0...v1.4.0) (2024-09-05)
 
 
