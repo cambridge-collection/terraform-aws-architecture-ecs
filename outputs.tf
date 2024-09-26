@@ -74,7 +74,7 @@ output "vpc_endpoint_security_group_id" {
 }
 
 output "route53_public_hosted_zone" {
-  value       = coalescelist(data.aws_route53_zone.existing.*.id, aws_route53_zone.public.*.id)[0]
+  value       = local.route53_public_hosted_zone_id
   description = "Zone ID of the Route 53 Public Hosted Zone"
 }
 

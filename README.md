@@ -51,7 +51,11 @@ No modules.
 | [aws_nat_gateway.nat_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
 | [aws_nat_gateway.nat_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
 | [aws_route.cudl_vpc_ec2_route_igw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route53_delegation_set.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_delegation_set) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.dkim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.dmarc_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.ses_verification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_zone.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_route_table.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.private_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
@@ -71,6 +75,9 @@ No modules.
 | [aws_security_group_rule.vpc_endpoint_egress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoint_ingress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoints_egress_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_ses_domain_dkim.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_dkim) | resource |
+| [aws_ses_domain_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_identity) | resource |
+| [aws_ses_domain_identity_verification.ses_verification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_identity_verification) | resource |
 | [aws_subnet.private_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.private_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.public_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
@@ -129,6 +136,7 @@ No modules.
 | <a name="input_ecs_capacity_provider_target_capacity_percent"></a> [ecs\_capacity\_provider\_target\_capacity\_percent](#input\_ecs\_capacity\_provider\_target\_capacity\_percent) | Percentage target capacity utilization for the autscaling group instances | `number` | `100` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Name prefix of the ECS Cluster and associated resources | `string` | n/a | yes |
 | <a name="input_route53_delegation_set_id"></a> [route53\_delegation\_set\_id](#input\_route53\_delegation\_set\_id) | The ID of the reusable delegation set whose NS records should be assigned to the hosted zone | `string` | `null` | no |
+| <a name="input_route53_delegation_set_reference_name"></a> [route53\_delegation\_set\_reference\_name](#input\_route53\_delegation\_set\_reference\_name) | This is a reference name used in Caller Reference (helpful for identifying single delegation set amongst others) | `string` | `null` | no |
 | <a name="input_route53_zone_domain_name"></a> [route53\_zone\_domain\_name](#input\_route53\_zone\_domain\_name) | Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored | `string` | `null` | no |
 | <a name="input_route53_zone_force_destroy"></a> [route53\_zone\_force\_destroy](#input\_route53\_zone\_force\_destroy) | Whether to destroy the Route 53 Zone although records may still exist | `bool` | `false` | no |
 | <a name="input_route53_zone_id_existing"></a> [route53\_zone\_id\_existing](#input\_route53\_zone\_id\_existing) | ID of an existing Route 53 Hosted zone as an alternative to creating a hosted zone | `string` | `null` | no |
@@ -165,148 +173,3 @@ No modules.
 | <a name="output_vpc_private_subnet_ids"></a> [vpc\_private\_subnet\_ids](#output\_vpc\_private\_subnet\_ids) | Private Subnet IDs |
 | <a name="output_vpc_public_subnet_ids"></a> [vpc\_public\_subnet\_ids](#output\_vpc\_public\_subnet\_ids) | Public Subnet IDs |
 | <a name="output_waf_acl_arn"></a> [waf\_acl\_arn](#output\_waf\_acl\_arn) | ARN of the WAF Web ACL |
-
-## Note about Route 53 Hosted Zone
-
-The name of the Route 53 Hosted Zone needs to match the value of a registered domain name. There is an option to manage an AWS registered domain in Terraform, but we feel it is best to avoid unintended to changes to the domain and this has been intentionally omitted from the configuration.
-
-This module is able to optionally build a Route 53 hosted zone, or to look up an existing hosted zone using the input `route53_zone_id_existing`.
-
-In AWS a Registered Domain specifies Name Servers which are used to resolve DNS queries for addresses in the domain. These can be set to the name servers created by a Route 53 Hosted Zone. However, given the hosted zone is managed by Terraform and may be replaced or destroyed, particularly in a sandbox environment, this could lead to frequent changes to the registered domain name servers. These would need to be made manually.
-
-To avoid this, it is possible to create a Delegation Set to act as a bridge between the registered domain and the Route 53 Hosted Zone. To avoid this also changing frequently, it should be created outside Terraform. This can be done with the AWS CLI.
-
-```sh
-aws route53 create-reusable-delegation-set --caller-reference "$(date +"%s")"
-```
-
-This will output an Id attribute in the format "/delegationset/N10230772EN8U28YG7Z00". The second part of this ID (the unique reference) can be passed to the route53_delegation_set_id input for this module. If a Route 53 Hosted Zone is created by this module it is able to use the name servers specified in the delegation set. When the registered domain is updated to use the name servers listed in the output for the command above, this will allow the hosted zone to be changed without needing to update the name server details again.
-
-Note that it is not possible to have two Route 53 hosted zones using the same domain name and the same name servers. A delegation set can only be used with a set of unique domain names.
-
-## Note about Auto Scaling Group Health Check Type
-
-The Auto Scaling Group (ASG) can have a health check type of either `EC2` or `ELB`. In this module the input `asg_health_check_type` is used to control this setting. The EC2 health check type checks the health of the EC2 instances connected to the ASG. This is a simple check determining if the instances are in a `running` state. The ELB health check uses health checks configured on the Elastic Load Balancer (ELB) attached to the ASG. It is not possible however to attach an Application Load Balancer (ALB) directly to the ASG. Target Groups are attached to the ASG, and thus will be done at the service level. The Target Group health checks are used by the ELB health checks configured on the ASG.
-
-Using the ELB health check type has some implications:
-
-- Initially, it this module is built without any dependent service there will be no way of fulfilling the ASG health check as there will be no target groups. This will lead to continuous instance cycling.
-- Where multiple dependent services have been built on top of the same implementation of this module, the failure of one of these services will fail them all. This will impact otherwise healthy services.
-
-The default value for the `asg_health_check_type` input has therefore been set to `EC2`. For implementations with a small number of stable services the value of `ELB` may be preferred as this provides a truer reflection of service health.
-
-## Note about Load Balancer Listener
-
-AWS does not permit multiple listeners on the same Load Balancer using the same port. This could mean that only one target was available on the default HTTPs port 443. A solution to this is to generate a "default" load balancer listener assigned to port 443. The output `alb_https_listener_arn` allows dependent modules to build their own `aws_lb_listener_rule` resources referring to the ARN of the listener. This allows a single port to front several targets, using rules to determine the correct target.
-
-An implementation of this could use the host_header condition to route requests using the value of the Host header sent by the client (note this header will be automatically inserted by most HTTP user agents such as curl). For example:
-
-```hcl
-resource "aws_lb_listener_rule" "this" {
-  listener_arn = var.alb_listener_arn
-  priority     = var.alb_listener_rule_priority
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.this.arn
-  }
-
-  condition {
-    host_header {
-      values = [aws_route53_record.this.name]
-    }
-  }
-}
-```
-
-The certificate `aws_acm_certificate.default` in this module has no corresponding Route 53 A record - therefore requests to the domain name of the certificate will fail. This is by design. It is not possible to create a Load Balancer listener using the HTTPs protocol without referring to a certificate, and the resource here allows this. The domain name of the default certificate is not output by this module as it is not intended for re-use. 
-
-## GitHub Workflows
-
-### Commit Lint
-
-When pushing a commit to GitHub, or raising a Pull Request, a GitHub workflow will automatically run `commitlint`. This makes use of the Node.js module https://commitlint.js.org. The workflow has been configured to use the Conventional Commits specification https://www.conventionalcommits.org/en/v1.0.0/. 
-
-When commits are formatted using a canonical format such as Conventional Commits these can be used in the release process to determine the version number. The commit history can also be used to generate a `CHANGELOG.md`
-
-For local development it is recommended to use a `commit-msg` Git hook. The following code should be placed in a file `.git/hooks/commit-msg` and made executable:
-
-```sh
-#!/bin/sh
-
-if command -v commitlint &> /dev/null
-then
-  echo $1 | commitlint
-fi
-```
-
-This is dependent on the `commitlint` tool, which can be installed using `npm install -g @commitlint/{cli,config-conventional}` (for a global installation). When working correctly the hook should fire whenever a commit is attempted, e.g.
-
-```
-git commit -m "silly message"
-⧗   input: .git/COMMIT_EDITMSG
-✖   subject may not be empty [subject-empty]
-✖   type may not be empty [type-empty]
-
-✖   found 2 problems, 0 warnings
-ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
-```
-
-Configuration for the commitlint tool is located in the `.commitlintrc.mjs` file in the root of the project. This is also used by the `commit-msg` hook.
-
-### Semantic Release
-
-On a push to the `main` branch, i.e. after a Pull Request has been approved and merged, a GitHub workflow will run [Semantic Release](https://semantic-release.gitbook.io/semantic-release). This will initiate a chain of actions that will automatically handle versioning, GitHub releases and Changelog generation.
-
-The commit analyzer bundled with Semantic Release follows the same `conventionalcommits` schema as is used in the commit linting.
-
-The semantic release tooling is configured in a file `.releaserc.json` in the root of the project.
-
-### Terraform Format Linting
-
-When pushing a commit to GitHub, or raising a Pull Request, a GitHub workflow will automatically run `terraform fmt -check -recursive` in the root of the project. If this produces a non-zero exit code, the job will fail.
-
-Terraform [fmt](https://developer.hashicorp.com/terraform/cli/commands/fmt) is an "intentionally opinionated" command to rewrite configuration files to a recommended format. Any errors detected by the check can easily be remedied with by running the command `terraform fmt -recursive` which will automatically change all terraform code in the project.
-
-For local development it is recommended to use a `pre-commit` hook to detect formatting issues before they are committed. Place the text below in a file `.git/hooks/pre-commit` and make this executable:
-
-```sh
-#!/bin/sh
-
-# Short-circuit if terraform not found
-if ! command -v terraform &> /dev/null
-then
-    echo "Terraform executable was not found in $PATH"
-    exit 1
-fi
-
-FORMAT_CHECK=$(terraform fmt -check -recursive 2>&1)
-FORMAT_RC=$?
-
-if echo $FORMAT_CHECK | grep -q "Error"
-then
-    # Iterate over lines of $FORMAT_CHECK
-    while IFS= read -r f; do
-        echo "$f"
-    done <<< "$FORMAT_CHECK"
-    exit $FORMAT_RC
-elif [ $FORMAT_RC -gt 0 ]
-then
-    printf "\033[1;31mThe following files need to be formatted:\033[m\n"
-    for f in $FORMAT_CHECK; do
-        echo $f
-    done
-    printf "Run \033[1;32mterraform fmt -recursive\033[m to fix\n"
-    exit "$FORMAT_RC"
-fi
-```
-
-When working correctly, the git hook will produce output when staged files are commited, e.g.:
-
-```
-$ git commit    
-The following files need to be formatted:
-main.tf
-modules/grault/variables.tf
-Run terraform fmt -recursive to fix
-```

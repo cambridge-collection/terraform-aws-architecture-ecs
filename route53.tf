@@ -1,8 +1,19 @@
+locals {
+  route53_public_hosted_zone_id   = coalescelist(data.aws_route53_zone.existing.*.id, aws_route53_zone.public.*.id)[0]
+  route53_public_hosted_zone_name = coalescelist(data.aws_route53_zone.existing.*.name, aws_route53_zone.public.*.name)[0]
+}
+
+resource "aws_route53_delegation_set" "this" {
+  count = var.route53_zone_id_existing != null ? 0 : 1
+
+  reference_name = var.route53_delegation_set_reference_name
+}
+
 resource "aws_route53_zone" "public" {
   count = var.route53_zone_id_existing != null ? 0 : 1
 
   name              = var.route53_zone_domain_name
-  delegation_set_id = var.route53_delegation_set_id
+  delegation_set_id = coalesce(var.route53_delegation_set_id, aws_route53_delegation_set.this[0].id)
   force_destroy     = var.route53_zone_force_destroy
 }
 
@@ -20,5 +31,5 @@ resource "aws_route53_record" "acm_validation_cname" {
   records         = [each.value.record]
   ttl             = 300
   type            = each.value.type
-  zone_id         = var.route53_zone_id_existing != null ? data.aws_route53_zone.existing.0.zone_id : aws_route53_zone.public.0.zone_id
+  zone_id         = local.route53_public_hosted_zone_id
 }

@@ -51,6 +51,12 @@ variable "route53_delegation_set_id" {
   default     = null
 }
 
+variable "route53_delegation_set_reference_name" {
+  type        = string
+  description = "This is a reference name used in Caller Reference (helpful for identifying single delegation set amongst others)"
+  default     = null
+}
+
 variable "route53_zone_force_destroy" {
   type        = bool
   description = "Whether to destroy the Route 53 Zone although records may still exist"
