@@ -268,3 +268,15 @@ variable "waf_ip_set_addresses" {
   description = "List of IPs for WAF IP Set Safelist"
   default     = ["131.111.0.0/16"]
 }
+
+variable "acm_create_certificate" {
+  type        = bool
+  description = "Whether to create a certificate in Amazon Certificate Manager"
+  default     = true
+}
+
+variable "acm_certificate_domain_name" {
+  type        = string
+  description = "Domain name of an existing certificate in Amazon Certificate Manager. Use if domain name of the certificate is different to domain_name of the service"
+  default     = null
+}

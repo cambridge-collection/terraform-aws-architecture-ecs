@@ -38,3 +38,12 @@ data "aws_route53_zone" "existing" {
 
   zone_id = var.route53_zone_id_existing
 }
+
+data "aws_acm_certificate" "existing" {
+  count = var.acm_create_certificate ? 0 : 1
+
+  domain      = var.acm_certificate_domain_name
+  statuses    = ["ISSUED"]
+  types       = ["IMPORTED"]
+  most_recent = true
+}
