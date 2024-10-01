@@ -275,8 +275,8 @@ variable "acm_create_certificate" {
   default     = true
 }
 
-variable "acm_certificate_domain_name" {
+variable "acm_certificate_arn" {
   type        = string
-  description = "Domain name of an existing certificate in Amazon Certificate Manager. Use if domain name of the certificate is different to domain_name of the service"
+  description = "ARN of an existing certificate in Amazon Certificate Manager"
   default     = null
 }
