@@ -5,6 +5,8 @@ locals {
 
 # NOTE see section "Note about Load Balancer Listener" in README.md
 resource "aws_acm_certificate" "default" {
+  count = var.acm_create_certificate ? 1 : 0
+
   domain_name = local.default_domain_name
   subject_alternative_names = [
     local.default_domain_name
@@ -17,7 +19,9 @@ resource "aws_acm_certificate" "default" {
 }
 
 resource "aws_acm_certificate_validation" "default" {
-  certificate_arn         = aws_acm_certificate.default.arn
+  count = var.acm_create_certificate ? 1 : 0
+
+  certificate_arn         = aws_acm_certificate.default.0.arn
   validation_record_fqdns = [for record in aws_route53_record.acm_validation_cname : record.fqdn]
 
   timeouts {
