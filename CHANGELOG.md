@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.6.0...v1.7.0) (2024-10-02)
+
+
+### Features
+
+* **acm:** Add ability to use existing certificate ([ea03c9e](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/ea03c9e24bcaf7102c97972ce556da272dd268f5))
+* **acm:** Add reference to existing ACM certificate ([139774d](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/139774d5909a41a517dfa0847a78e6ffe73c777e))
+
 ## [1.6.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.5.1...v1.6.0) (2024-09-20)
 
 
