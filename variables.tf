@@ -180,6 +180,12 @@ variable "asg_allow_all_egress" {
   default     = false
 }
 
+variable "ecs_cluster_setting_container_insights" {
+  type        = string
+  description = "Whether to enable container insights on the cluster. Valid values enabled, disabled"
+  default     = "disabled"
+}
+
 variable "ecs_capacity_provider_status" {
   type        = string
   description = "Enables or disables managed scaling on ASG"

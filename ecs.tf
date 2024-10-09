@@ -1,5 +1,10 @@
 resource "aws_ecs_cluster" "this" {
   name = var.name_prefix
+
+  setting {
+    name  = "containerInsights"
+    value = var.ecs_cluster_setting_container_insights
+  }
 }
 
 # NOTE this resource automatically creates an ECS managed Scaling Policy
