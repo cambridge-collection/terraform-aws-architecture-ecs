@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.7.0...v1.7.1) (2024-10-14)
+
+
+### Bug Fixes
+
+* **waf:** Update WAF to turn off IP set restrictions by default ([8741c20](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/8741c20d5ee6e3b1345496c9a5335e5321199157))
+
 ## [1.7.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.6.0...v1.7.0) (2024-10-02)
 
 
