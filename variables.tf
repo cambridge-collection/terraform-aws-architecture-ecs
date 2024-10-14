@@ -263,6 +263,12 @@ variable "cloudwatch_log_group" {
   description = "Name of the cloudwatch log group"
 }
 
+variable "waf_use_ip_restrictions" {
+  type        = bool
+  description = "Whether to use IP range restrictions on the default WAF"
+  default     = false
+}
+
 variable "waf_ip_set_addresses" {
   type        = list(string)
   description = "List of IPs for WAF IP Set Safelist"
