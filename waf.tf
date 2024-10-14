@@ -1,4 +1,6 @@
 resource "aws_wafv2_ip_set" "this" {
+  count = var.waf_use_ip_restrictions ? 1 : 0
+
   name               = "${var.name_prefix}-waf-ip-set"
   provider           = aws.us-east-1
   description        = "Managed by Terraform"
@@ -97,24 +99,28 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
-  rule {
-    name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-    priority = 3
+  dynamic "rule" {
+    for_each = var.waf_use_ip_restrictions ? [1] : []
 
-    action {
-      allow {}
-    }
+    content {
+      name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
+      priority = 3
 
-    statement {
-      ip_set_reference_statement {
-        arn = aws_wafv2_ip_set.this.arn
+      action {
+        allow {}
       }
-    }
 
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      sampled_requests_enabled   = true
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.this.0.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.name_prefix}-waf-web-acl-rule-ip-set"
+        sampled_requests_enabled   = true
+      }
     }
   }
 
