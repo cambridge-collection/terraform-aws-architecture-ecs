@@ -172,6 +172,8 @@ resource "aws_route" "cudl_vpc_ec2_route_igw" {
 ################################################################################
 
 resource "aws_vpc_endpoint" "s3" {
+  count = var.vpc_endpoints_create ? 1 : 0
+
   vpc_endpoint_type = "Gateway"
   vpc_id            = aws_vpc.this.id
   service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
@@ -186,9 +188,9 @@ resource "aws_vpc_endpoint" "s3" {
   }
 }
 
-# This is needed for connectivity to aws services in private subnets
 resource "aws_vpc_endpoint" "interface" {
-  for_each          = toset(var.vpc_endpoint_services)
+  for_each = var.vpc_endpoints_create ? toset(var.vpc_endpoint_services) : toset([])
+
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.this.id
   service_name      = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
@@ -196,7 +198,7 @@ resource "aws_vpc_endpoint" "interface" {
     aws_subnet.private_a.id,
     aws_subnet.private_b.id
   ]
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  security_group_ids  = [aws_security_group.vpc_endpoints.0.id]
   private_dns_enabled = true
 
   dns_options {

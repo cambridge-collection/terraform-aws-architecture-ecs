@@ -23,6 +23,8 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group" "vpc_endpoints" {
+  count = var.vpc_endpoints_create ? 1 : 0
+
   name        = "${var.name_prefix}-vpc-endpoints"
   description = "Allows access to VPC Endpoints"
   vpc_id      = aws_vpc.this.id
@@ -59,30 +61,36 @@ resource "aws_security_group_rule" "alb_ingress_cloudfront" {
 }
 
 resource "aws_security_group_rule" "vpc_endpoint_ingress_self" {
+  count = var.vpc_endpoints_create ? 1 : 0
+
   type              = "ingress"
   protocol          = "tcp"
   description       = "VPC Endpoint ingress for ${var.name_prefix}"
-  security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id = aws_security_group.vpc_endpoints.0.id
   from_port         = 443
   to_port           = 443
   self              = true
 }
 
 resource "aws_security_group_rule" "vpc_endpoint_egress_self" {
+  count = var.vpc_endpoints_create ? 1 : 0
+
   type              = "egress"
   protocol          = "tcp"
   description       = "VPC Endpoint egress for ${var.name_prefix}"
-  security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id = aws_security_group.vpc_endpoints.0.id
   from_port         = 443
   to_port           = 443
   self              = true
 }
 
 resource "aws_security_group_rule" "vpc_endpoints_egress_s3" {
+  count = var.vpc_endpoints_create ? 1 : 0
+
   type              = "egress"
   protocol          = "tcp"
   description       = "Egress to S3 for ${var.name_prefix}"
-  security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id = aws_security_group.vpc_endpoints.0.id
   from_port         = 443
   to_port           = 443
   prefix_list_ids   = [data.aws_ec2_managed_prefix_list.s3.id]
