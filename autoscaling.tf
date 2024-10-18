@@ -47,10 +47,10 @@ resource "aws_launch_template" "this" {
   name          = "${var.name_prefix}-lt"
   instance_type = var.ec2_instance_type
   image_id      = data.aws_ami.ecs_ami.image_id
-  vpc_security_group_ids = [
+  vpc_security_group_ids = var.vpc_endpoints_create ? [
     aws_security_group.asg.id,
-    aws_security_group.vpc_endpoints.id
-  ]
+    aws_security_group.vpc_endpoints.0.id
+  ] : [aws_security_group.asg.id]
   key_name               = var.ec2_keypair
   update_default_version = true
   user_data = base64encode(templatefile("${path.module}/userdata.sh.ttfpl", {

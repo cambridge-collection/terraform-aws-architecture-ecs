@@ -6,7 +6,7 @@ The module will by default build an Auto Scaling Group in private subnets. VPC E
 
 By default the `ec2_keypair` input is null, and no Security Group rules allow for SSH access. EC2 instances can be accessed using AWS Session Manager. 
 
-In order to provide a running ECS Service, a child module will need to build it's own ECS Service and ECS Task Definition objects, in addition to an ECR Repository. It will not be possible to use publicly available container images as instances in private subnets will have no outbound route to the internet.
+In order to provide a running ECS Service, a child module will need to build it's own ECS Service and ECS Task Definition objects.
 
 A child module will also need to create its own Load Balancer Listener and Load Balancer Target Group. The child module will need an `aws_autoscaling_attachment` resource to connect the target group to the Autoscaling Group created by this module. The attachment allows the Autoscaling Group to automatically register EC2 Instances with the target group.
 
@@ -111,7 +111,7 @@ No modules.
 | <a name="input_alb_listener_ssl_policy"></a> [alb\_listener\_ssl\_policy](#input\_alb\_listener\_ssl\_policy) | TLS security policy used by the default ALB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | Name of the OS Architecture. Note must be compatible with the selected EC2 Instance Type | `string` | `"x86_64"` | no |
 | <a name="input_ami_name_prefix"></a> [ami\_name\_prefix](#input\_ami\_name\_prefix) | Prefix used to find an AMI for use in the Launch Template | `string` | `"amzn2-ami-ecs-hvm-2.0*"` | no |
-| <a name="input_asg_allow_all_egress"></a> [asg\_allow\_all\_egress](#input\_asg\_allow\_all\_egress) | Whether to allow EC2 instances in ASG egress to all targets | `bool` | `false` | no |
+| <a name="input_asg_allow_all_egress"></a> [asg\_allow\_all\_egress](#input\_asg\_allow\_all\_egress) | Whether to allow EC2 instances in ASG egress to all targets | `bool` | `true` | no |
 | <a name="input_asg_default_cooldown"></a> [asg\_default\_cooldown](#input\_asg\_default\_cooldown) | Number of seconds between scaling activities | `number` | `300` | no |
 | <a name="input_asg_desired_capacity"></a> [asg\_desired\_capacity](#input\_asg\_desired\_capacity) | Desired number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_enabled_metrics"></a> [asg\_enabled\_metrics](#input\_asg\_enabled\_metrics) | List of metrics enabled for the Auotscaling Group | `list(string)` | <pre>[<br>  "GroupTotalInstances",<br>  "GroupInServiceInstances",<br>  "GroupTerminatingInstances",<br>  "GroupPendingInstances",<br>  "GroupInServiceCapacity",<br>  "GroupPendingCapacity",<br>  "GroupTotalCapacity",<br>  "GroupTerminatingCapacity"<br>]</pre> | no |
@@ -140,6 +140,7 @@ No modules.
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_vpc_endpoint_dns_record_ip_type"></a> [vpc\_endpoint\_dns\_record\_ip\_type](#input\_vpc\_endpoint\_dns\_record\_ip\_type) | The DNS records created for the endpoint | `string` | `"ipv4"` | no |
 | <a name="input_vpc_endpoint_services"></a> [vpc\_endpoint\_services](#input\_vpc\_endpoint\_services) | List of services to create VPC Endpoints for | `list(string)` | <pre>[<br>  "ssmmessages",<br>  "ssm",<br>  "ec2messages",<br>  "ecr.api",<br>  "ecr.dkr",<br>  "ecs",<br>  "ecs-agent",<br>  "ecs-telemetry",<br>  "logs"<br>]</pre> | no |
+| <a name="input_vpc_endpoints_create"></a> [vpc\_endpoints\_create](#input\_vpc\_endpoints\_create) | Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact | `bool` | `false` | no |
 | <a name="input_vpc_peering_vpc_ids"></a> [vpc\_peering\_vpc\_ids](#input\_vpc\_peering\_vpc\_ids) | List of VPC IDS for peering with the VPC | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_public_ip"></a> [vpc\_public\_subnet\_public\_ip](#input\_vpc\_public\_subnet\_public\_ip) | Whether to automatically assign public IP addresses in the public subnets | `bool` | `false` | no |
 | <a name="input_waf_ip_set_addresses"></a> [waf\_ip\_set\_addresses](#input\_waf\_ip\_set\_addresses) | List of IPs for WAF IP Set Safelist | `list(string)` | <pre>[<br>  "131.111.0.0/16"<br>]</pre> | no |
@@ -222,7 +223,17 @@ resource "aws_lb_listener_rule" "this" {
 }
 ```
 
-The certificate `aws_acm_certificate.default` in this module has no corresponding Route 53 A record - therefore requests to the domain name of the certificate will fail. This is by design. It is not possible to create a Load Balancer listener using the HTTPs protocol without referring to a certificate, and the resource here allows this. The domain name of the default certificate is not output by this module as it is not intended for re-use. 
+The certificate `aws_acm_certificate.default` in this module has no corresponding Route 53 A record - therefore requests to the domain name of the certificate will fail. This is by design. It is not possible to create a Load Balancer listener using the HTTPs protocol without referring to a certificate, and the resource here allows this. The domain name of the default certificate is not output by this module as it is not intended for re-use.
+
+## Outbound Access
+
+The Autoscaling Group used by ECS services is deployed to private subnets. The input variable `asg_allow_all_egress` is used to create a Security Group rule allowing outbound access to the Internet via the NAT Gateway. This defaults to `true`.
+
+It is possible to deploy services with `asg_allow_all_egress` set to `false`. In this case the input `vpc_endpoints_create` should be set to `true`, otherwise services will not be able to deploy successfully.
+
+Setting `vpc_endpoints_create` to `true` will allow services to access AWS API endpoints using local interfaces inside the VPC. The Route 53 Resolver will resolve AWS API addresses to local IPv4 addresses. This approach should improve the security of deployments by limiting external resources that container services have access to. The list of VPC endpoints can be changed by overriding the input `vpc_endpoint_services`.
+
+There is a cost impact of using VPC endpoints as there is a standing charge for each endpoint, whether they are used or not. For this reason the input `vpc_endpoints_create` defaults to `false`.
 
 ## GitHub Workflows
 
