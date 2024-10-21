@@ -180,12 +180,6 @@ variable "asg_enabled_metrics" {
   ]
 }
 
-variable "asg_allow_all_egress" {
-  type        = bool
-  description = "Whether to allow EC2 instances in ASG egress to all targets"
-  default     = true
-}
-
 variable "ecs_capacity_provider_status" {
   type        = string
   description = "Enables or disables managed scaling on ASG"

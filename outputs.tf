@@ -73,6 +73,11 @@ output "vpc_endpoint_security_group_id" {
   description = "ID of the Security Group for VPC Endpoints"
 }
 
+output "vpc_egress_security_group_id" {
+  value       = var.vpc_endpoints_create ? "" : aws_security_group.vpc_egress.0.id
+  description = "ID of the Security Group for general egress"
+}
+
 output "route53_public_hosted_zone" {
   value       = coalescelist(data.aws_route53_zone.existing.*.id, aws_route53_zone.public.*.id)[0]
   description = "Zone ID of the Route 53 Public Hosted Zone"
