@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.7.2...v2.0.0) (2024-10-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **vpc:** Input asg_allow_all_egress has been removed
+
+### Features
+
+* **vpc:** Add aws_security_group.egress_https ([921c30c](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/921c30c62170ebda5b3ad92b27ed7fc94e3f55cc))
+* **vpc:** Make VPC Endpoints conditional ([12eea02](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/12eea02edabbb382e0d9dbcb1da12edc396f6f45))
+
 ## [1.7.2](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.7.1...v1.7.2) (2024-10-14)
 
 
