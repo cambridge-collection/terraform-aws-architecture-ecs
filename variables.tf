@@ -21,6 +21,12 @@ variable "vpc_public_subnet_public_ip" {
   default     = false
 }
 
+variable "vpc_endpoints_create" {
+  type        = bool
+  description = "Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact"
+  default     = false
+}
+
 variable "vpc_endpoint_dns_record_ip_type" {
   type        = string
   description = "The DNS records created for the endpoint"
@@ -172,12 +178,6 @@ variable "asg_enabled_metrics" {
     "GroupTotalCapacity",
     "GroupTerminatingCapacity",
   ]
-}
-
-variable "asg_allow_all_egress" {
-  type        = bool
-  description = "Whether to allow EC2 instances in ASG egress to all targets"
-  default     = false
 }
 
 variable "ecs_capacity_provider_status" {

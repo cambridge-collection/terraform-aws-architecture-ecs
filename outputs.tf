@@ -69,8 +69,13 @@ output "asg_security_group_id" {
 }
 
 output "vpc_endpoint_security_group_id" {
-  value       = aws_security_group.vpc_endpoints.id
+  value       = var.vpc_endpoints_create ? aws_security_group.vpc_endpoints.0.id : ""
   description = "ID of the Security Group for VPC Endpoints"
+}
+
+output "vpc_egress_security_group_id" {
+  value       = var.vpc_endpoints_create ? "" : aws_security_group.vpc_egress.0.id
+  description = "ID of the Security Group for general egress"
 }
 
 output "route53_public_hosted_zone" {
