@@ -105,6 +105,12 @@ variable "ec2_instance_type" {
   default     = "t3.small"
 }
 
+variable "ec2_additional_userdata" {
+  type        = string
+  description = "Additional userdata to append to the launch template configuration"
+  default     = ""
+}
+
 variable "ec2_ebs_volume_type" {
   type        = string
   description = "Volume type used in EBS volumes"
