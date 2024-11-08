@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.0.0...v2.1.0) (2024-11-08)
+
+
+### Features
+
+* **ec2:** Allow additional userdata ([1c47314](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/1c4731495e0c6a0451063f1ed5d7bcf998e9d878))
+
 ## [2.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v1.7.2...v2.0.0) (2024-10-23)
 
 
