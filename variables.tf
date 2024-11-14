@@ -292,3 +292,9 @@ variable "acm_certificate_arn" {
   description = "ARN of an existing certificate in Amazon Certificate Manager"
   default     = null
 }
+
+variable "iam_instance_additional_policies" {
+  type        = map(string)
+  description = "Map of additional IAM Policy ARNs to apply to the EC2 instance profile. Values should be Policy ARNs; Keys are descriptive strings"
+  default     = {}
+}
