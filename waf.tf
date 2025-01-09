@@ -108,35 +108,10 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "rule" {
-    for_each = var.waf_use_ip_restrictions ? [1] : []
-
-    content {
-      name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      priority = 3
-
-      action {
-        allow {}
-      }
-
-      statement {
-        ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.this.0.arn
-        }
-      }
-
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-        sampled_requests_enabled   = true
-      }
-    }
-  }
-
-  dynamic "rule" {
     for_each = var.waf_use_rate_limiting ? [1] : []
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
-      priority = 4
+      priority = 3
 
       action {
         block {}
@@ -153,6 +128,31 @@ resource "aws_wafv2_web_acl" "this" {
       visibility_config {
         cloudwatch_metrics_enabled = true
         metric_name                = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
+    for_each = var.waf_use_ip_restrictions ? [1] : []
+
+    content {
+      name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
+      priority = 4
+
+      action {
+        allow {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.this.0.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.name_prefix}-waf-web-acl-rule-ip-set"
         sampled_requests_enabled   = true
       }
     }
