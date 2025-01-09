@@ -275,10 +275,34 @@ variable "waf_use_ip_restrictions" {
   default     = false
 }
 
+variable "waf_use_rate_limiting" {
+  type        = bool
+  description = "Whether to use rate limiting on the default WAF"
+  default     = false
+}
+
 variable "waf_ip_set_addresses" {
   type        = list(string)
   description = "List of IPs for WAF IP Set Safelist"
   default     = ["131.111.0.0/16"]
+}
+
+variable "waf_rate_limit" {
+  type        = number
+  description = "The limit of requests from a single originating IP address"
+  default     = 300
+}
+
+variable "waf_rate_limiting_aggregate_key_type" {
+  type        = string
+  description = "Indicates how to aggregate the request counts. Valid values include: CONSTANT, CUSTOM_KEYS, FORWARDED_IP, or IP"
+  default     = "IP"
+}
+
+variable "waf_rate_limiting_evaluation_window" {
+  type        = number
+  description = "Number of seconds during which the WAF should count requests for rate limiting. Valid values are 60, 120, 300 and 600"
+  default     = 120
 }
 
 variable "acm_create_certificate" {

@@ -145,7 +145,11 @@ No modules.
 | <a name="input_vpc_peering_vpc_ids"></a> [vpc\_peering\_vpc\_ids](#input\_vpc\_peering\_vpc\_ids) | List of VPC IDS for peering with the VPC | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_public_ip"></a> [vpc\_public\_subnet\_public\_ip](#input\_vpc\_public\_subnet\_public\_ip) | Whether to automatically assign public IP addresses in the public subnets | `bool` | `false` | no |
 | <a name="input_waf_ip_set_addresses"></a> [waf\_ip\_set\_addresses](#input\_waf\_ip\_set\_addresses) | List of IPs for WAF IP Set Safelist | `list(string)` | <pre>[<br>  "131.111.0.0/16"<br>]</pre> | no |
+| <a name="input_waf_rate_limit"></a> [waf\_rate\_limit](#input\_waf\_rate\_limit) | The limit of requests from a single originating IP address | `number` | `300` | no |
+| <a name="input_waf_rate_limiting_aggregate_key_type"></a> [waf\_rate\_limiting\_aggregate\_key\_type](#input\_waf\_rate\_limiting\_aggregate\_key\_type) | Indicates how to aggregate the request counts. Valid values include: CONSTANT, CUSTOM\_KEYS, FORWARDED\_IP, or IP | `string` | `"IP"` | no |
+| <a name="input_waf_rate_limiting_evaluation_window"></a> [waf\_rate\_limiting\_evaluation\_window](#input\_waf\_rate\_limiting\_evaluation\_window) | Number of seconds during which the WAF should count requests for rate limiting. Valid values are 60, 120, 300 and 600 | `number` | `120` | no |
 | <a name="input_waf_use_ip_restrictions"></a> [waf\_use\_ip\_restrictions](#input\_waf\_use\_ip\_restrictions) | Whether to use IP range restrictions on the default WAF | `bool` | `false` | no |
+| <a name="input_waf_use_rate_limiting"></a> [waf\_use\_rate\_limiting](#input\_waf\_use\_rate\_limiting) | Whether to use rate limiting on the default WAF | `bool` | `false` | no |
 
 ## Outputs
 
