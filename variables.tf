@@ -305,6 +305,18 @@ variable "waf_rate_limiting_evaluation_window" {
   default     = 120
 }
 
+variable "waf_rate_limiting_forwarded_header_name" {
+  type        = string
+  description = "Name of the HTTP header to use as an alternative for IP address matching"
+  default     = "X-Forwarded-For"
+}
+
+variable "waf_rate_limiting_forwarded_fallback_behavior" {
+  type        = string
+  description = "Behaviour if a request does not contain the specified forwarded header"
+  default     = "NO_MATCH"
+}
+
 variable "acm_create_certificate" {
   type        = bool
   description = "Whether to create a certificate in Amazon Certificate Manager"

@@ -122,6 +122,14 @@ resource "aws_wafv2_web_acl" "this" {
           limit                 = var.waf_rate_limit
           aggregate_key_type    = var.waf_rate_limiting_aggregate_key_type
           evaluation_window_sec = var.waf_rate_limiting_evaluation_window
+
+          dynamic "forwarded_ip_config" {
+            for_each = var.waf_rate_limiting_aggregate_key_type == "FORWARDED_IP" ? [1] : []
+            content {
+              header_name       = var.waf_rate_limiting_forwarded_header_name
+              fallback_behavior = var.waf_rate_limiting_forwarded_fallback_behavior
+            }
+          }
         }
       }
 

@@ -148,6 +148,8 @@ No modules.
 | <a name="input_waf_rate_limit"></a> [waf\_rate\_limit](#input\_waf\_rate\_limit) | The limit of requests from a single originating IP address | `number` | `300` | no |
 | <a name="input_waf_rate_limiting_aggregate_key_type"></a> [waf\_rate\_limiting\_aggregate\_key\_type](#input\_waf\_rate\_limiting\_aggregate\_key\_type) | Indicates how to aggregate the request counts. Valid values include: CONSTANT, CUSTOM\_KEYS, FORWARDED\_IP, or IP | `string` | `"IP"` | no |
 | <a name="input_waf_rate_limiting_evaluation_window"></a> [waf\_rate\_limiting\_evaluation\_window](#input\_waf\_rate\_limiting\_evaluation\_window) | Number of seconds during which the WAF should count requests for rate limiting. Valid values are 60, 120, 300 and 600 | `number` | `120` | no |
+| <a name="input_waf_rate_limiting_forwarded_fallback_behavior"></a> [waf\_rate\_limiting\_forwarded\_fallback\_behavior](#input\_waf\_rate\_limiting\_forwarded\_fallback\_behavior) | Behaviour if a request does not contain the specified forwarded header | `string` | `"NO_MATCH"` | no |
+| <a name="input_waf_rate_limiting_forwarded_header_name"></a> [waf\_rate\_limiting\_forwarded\_header\_name](#input\_waf\_rate\_limiting\_forwarded\_header\_name) | Name of the HTTP header to use as an alternative for IP address matching | `string` | `"X-Forwarded-For"` | no |
 | <a name="input_waf_use_ip_restrictions"></a> [waf\_use\_ip\_restrictions](#input\_waf\_use\_ip\_restrictions) | Whether to use IP range restrictions on the default WAF | `bool` | `false` | no |
 | <a name="input_waf_use_rate_limiting"></a> [waf\_use\_rate\_limiting](#input\_waf\_use\_rate\_limiting) | Whether to use rate limiting on the default WAF | `bool` | `false` | no |
 
