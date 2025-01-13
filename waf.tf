@@ -108,11 +108,45 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "rule" {
+    for_each = var.waf_use_rate_limiting ? [1] : []
+    content {
+      name     = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
+      priority = 3
+
+      action {
+        block {}
+      }
+
+      statement {
+        rate_based_statement {
+          limit                 = var.waf_rate_limit
+          aggregate_key_type    = var.waf_rate_limiting_aggregate_key_type
+          evaluation_window_sec = var.waf_rate_limiting_evaluation_window
+
+          dynamic "forwarded_ip_config" {
+            for_each = var.waf_rate_limiting_aggregate_key_type == "FORWARDED_IP" ? [1] : []
+            content {
+              header_name       = var.waf_rate_limiting_forwarded_header_name
+              fallback_behavior = var.waf_rate_limiting_forwarded_fallback_behavior
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
     for_each = var.waf_use_ip_restrictions ? [1] : []
 
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      priority = 3
+      priority = 4
 
       action {
         allow {}
