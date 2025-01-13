@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.1.0...v2.2.0) (2025-01-13)
+
+
+### Features
+
+* **waf:** Add dynamic forwarded_ip_config block to rate limiting rule ([20292d3](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/20292d37bdb1d2e7df3b695152e7fc7c167059c9))
+* **waf:** Add optional rate limiting block on aws_wafv2_web_acl.this ([e3b2ec5](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/e3b2ec5ccbc3bec7955a0e39651989d075d5b8e3))
+* **waf:** Reorder WAF rules so ip restriction allow rule comes last ([cc71261](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/cc71261a880ec8a8531b8edf5b865da85fd341d0))
+
 ## [2.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.0.0...v2.1.0) (2024-11-08)
 
 
