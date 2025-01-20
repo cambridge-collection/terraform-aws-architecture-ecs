@@ -62,6 +62,18 @@ resource "aws_security_group_rule" "vpc_egress_https" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "vpc_egress_http" {
+  count = var.vpc_endpoints_create ? 0 : 1
+
+  type              = "egress"
+  protocol          = "tcp"
+  description       = "HTTP outbound access for ${var.name_prefix}"
+  security_group_id = aws_security_group.vpc_egress.0.id
+  from_port         = 80
+  to_port           = 80
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "alb_ingress_cloudfront" {
   type              = "ingress"
   protocol          = "tcp"
