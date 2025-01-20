@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.2.0...v2.3.0) (2025-01-20)
+
+
+### Features
+
+* **vpc:** Add aws_security_group_rule.vpc_egress_http ([ee38903](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/ee38903ce9c703a664d73be91e2419f12a157daa))
+
 ## [2.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.1.0...v2.2.0) (2025-01-13)
 
 
