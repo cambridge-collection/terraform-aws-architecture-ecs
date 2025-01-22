@@ -317,6 +317,24 @@ variable "waf_rate_limiting_forwarded_fallback_behavior" {
   default     = "NO_MATCH"
 }
 
+variable "waf_use_bot_control" {
+  type        = bool
+  description = "Whether to use enhanced bot control on the WAF"
+  default     = false
+}
+
+variable "waf_bot_control_enable_machine_learning" {
+  type        = bool
+  description = "Determines whether to use machine learning to analyze your web traffic for bot-related activity"
+  default     = false
+}
+
+variable "waf_bot_control_inspection_level" {
+  type        = string
+  description = "The inspection level to use for the WAF Bot Control rule group. Must be one of COMMON or TARGETED"
+  default     = "COMMON"
+}
+
 variable "acm_create_certificate" {
   type        = bool
   description = "Whether to create a certificate in Amazon Certificate Manager"
