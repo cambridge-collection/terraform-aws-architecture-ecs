@@ -108,10 +108,42 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "rule" {
+    for_each = var.waf_use_bot_control ? [1] : []
+    content {
+      name     = join("-", [var.name_prefix, "waf-web-bot-control"])
+      priority = 3
+
+      statement {
+        managed_rule_group_statement {
+          name        = "AWSManagedRulesBotControlRuleSet"
+          vendor_name = "AWS"
+
+          managed_rule_group_configs {
+            aws_managed_rules_bot_control_rule_set {
+              enable_machine_learning = var.waf_bot_control_enable_machine_learning
+              inspection_level        = var.waf_bot_control_inspection_level
+            }
+          }
+        }
+      }
+
+      override_action {
+        none {}
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = join("-", [var.name_prefix, "waf-web-bot-control"])
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
     for_each = var.waf_use_rate_limiting ? [1] : []
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
-      priority = 3
+      priority = 4
 
       action {
         block {}
@@ -146,7 +178,7 @@ resource "aws_wafv2_web_acl" "this" {
 
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      priority = 4
+      priority = 5
 
       action {
         allow {}
