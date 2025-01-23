@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.4.0...v2.5.0) (2025-01-23)
+
+
+### Features
+
+* **waf:** Add ability to exclude certain headers from bot control ([585434d](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/585434d9f343fa253c0cbbcbc3471d87746ae9c6))
+
 ## [2.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.3.0...v2.4.0) (2025-01-23)
 
 
