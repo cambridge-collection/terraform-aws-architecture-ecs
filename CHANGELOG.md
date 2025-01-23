@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.3.0...v2.4.0) (2025-01-23)
+
+
+### Features
+
+* **waf:** Add bot control WAF rule ([bef9d5c](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/bef9d5c8d9625ca881a39c8955fd9462822a9f64))
+
 ## [2.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.2.0...v2.3.0) (2025-01-20)
 
 
