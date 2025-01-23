@@ -335,6 +335,30 @@ variable "waf_bot_control_inspection_level" {
   default     = "COMMON"
 }
 
+variable "waf_bot_control_exclusion_header" {
+  type        = string
+  description = "Name of header to exclude from WAF bot control"
+  default     = null
+}
+
+variable "waf_bot_control_exclusion_header_value" {
+  type        = string
+  description = "Value of header to exclude from WAF bot control"
+  default     = null
+}
+
+variable "waf_bot_control_exclusion_header_match_type" {
+  type        = string
+  description = "Match type for the bot control exclusion header"
+  default     = "CONTAINS"
+}
+
+variable "waf_bot_control_exclusion_header_text_transform" {
+  type        = string
+  description = "Text transformation to apply before matching the exclusion header for WAF bot control"
+  default     = "NONE"
+}
+
 variable "acm_create_certificate" {
   type        = bool
   description = "Whether to create a certificate in Amazon Certificate Manager"

@@ -125,6 +125,27 @@ resource "aws_wafv2_web_acl" "this" {
             }
           }
         }
+
+        dynamic "not_statement" {
+          for_each = var.waf_bot_control_exclusion_header != null ? [1] : []
+          content {
+            statement {
+              byte_match_statement {
+                search_string         = var.waf_bot_control_exclusion_header_value
+                positional_constraint = var.waf_bot_control_exclusion_header_match_type
+                field_to_match {
+                  single_header {
+                    name = var.waf_bot_control_exclusion_header
+                  }
+                }
+                text_transformation {
+                  type     = var.waf_bot_control_exclusion_header_text_transform
+                  priority = 0
+                }
+              }
+            }
+          }
+        }
       }
 
       override_action {
