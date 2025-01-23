@@ -154,6 +154,7 @@ No modules.
 | <a name="input_waf_rate_limiting_forwarded_fallback_behavior"></a> [waf\_rate\_limiting\_forwarded\_fallback\_behavior](#input\_waf\_rate\_limiting\_forwarded\_fallback\_behavior) | Behaviour if a request does not contain the specified forwarded header | `string` | `"NO_MATCH"` | no |
 | <a name="input_waf_rate_limiting_forwarded_header_name"></a> [waf\_rate\_limiting\_forwarded\_header\_name](#input\_waf\_rate\_limiting\_forwarded\_header\_name) | Name of the HTTP header to use as an alternative for IP address matching | `string` | `"X-Forwarded-For"` | no |
 | <a name="input_waf_use_bot_control"></a> [waf\_use\_bot\_control](#input\_waf\_use\_bot\_control) | Whether to use enhanced bot control on the WAF | `bool` | `false` | no |
+| <a name="input_waf_rule_group_arns"></a> [waf\_rule\_group\_arns](#input\_waf\_rule\_group\_arns) | List of WAF Rule Group ARNs to add as additional rules to the WAF | `list(string)` | `[]` | no |
 | <a name="input_waf_use_ip_restrictions"></a> [waf\_use\_ip\_restrictions](#input\_waf\_use\_ip\_restrictions) | Whether to use IP range restrictions on the default WAF | `bool` | `false` | no |
 | <a name="input_waf_use_rate_limiting"></a> [waf\_use\_rate\_limiting](#input\_waf\_use\_rate\_limiting) | Whether to use rate limiting on the default WAF | `bool` | `false` | no |
 

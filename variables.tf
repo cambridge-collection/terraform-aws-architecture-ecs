@@ -335,6 +335,12 @@ variable "waf_bot_control_inspection_level" {
   default     = "COMMON"
 }
 
+variable "waf_rule_group_arns" {
+  type        = list(string)
+  description = "List of WAF Rule Group ARNs to add as additional rules to the WAF"
+  default     = []
+}
+
 variable "acm_create_certificate" {
   type        = bool
   description = "Whether to create a certificate in Amazon Certificate Manager"

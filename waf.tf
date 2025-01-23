@@ -174,11 +174,32 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "rule" {
+    for_each = toset(var.waf_rule_group_arns)
+
+    content {
+      name     = "${var.name_prefix}-waf-web-acl-rule-group-ref-${index(var.waf_rule_group_arns, rule.key) + 1}"
+      priority = var.waf_use_rate_limiting ? 5 + index(var.waf_rule_group_arns, rule.key) : 4 + index(var.waf_rule_group_arns, rule.key)
+
+      statement {
+        rule_group_reference_statement {
+          arn = rule.key
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = join("-", [var.name_prefix, "waf-web-acl-rule-group-ref", tostring(index(var.waf_rule_group_arns, rule.key) + 1)])
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
     for_each = var.waf_use_ip_restrictions ? [1] : []
 
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      priority = 5
+      priority = var.waf_use_rate_limiting ? 6 + length(var.waf_rule_group_arns) : 5 + length(var.waf_rule_group_arns)
 
       action {
         allow {}
