@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.5.0...v2.5.1) (2025-01-24)
+
+
+### Bug Fixes
+
+* **waf:** Fix mangled managed_rule_group_statement block ([58294fe](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/58294fef34395eec5774016d561afc0ca9e40bc4))
+
 ## [2.5.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.4.0...v2.5.0) (2025-01-23)
 
 
