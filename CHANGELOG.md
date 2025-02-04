@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.5.1...v3.0.0) (2025-02-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace variables with waf_bot_control_exclusions list of objects
+
+### Features
+
+* Updating to add exclusion type header or uri to WAF bot settings ([a902672](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/a902672e3e7baeba81e9e5020fb70f0205211da7))
+
 ## [2.5.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.5.0...v2.5.1) (2025-01-24)
 
 
