@@ -335,28 +335,15 @@ variable "waf_bot_control_inspection_level" {
   default     = "COMMON"
 }
 
-variable "waf_bot_control_exclusion_header" {
-  type        = string
-  description = "Name of header to exclude from WAF bot control"
-  default     = null
-}
-
-variable "waf_bot_control_exclusion_header_value" {
-  type        = string
-  description = "Value of header to exclude from WAF bot control"
-  default     = null
-}
-
-variable "waf_bot_control_exclusion_header_match_type" {
-  type        = string
-  description = "Match type for the bot control exclusion header"
-  default     = "CONTAINS"
-}
-
-variable "waf_bot_control_exclusion_header_text_transform" {
-  type        = string
-  description = "Text transformation to apply before matching the exclusion header for WAF bot control"
-  default     = "NONE"
+variable "waf_bot_control_exclusions" {
+  description = "A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf_bot_control_exclusion_header' and 'waf_bot_control_exclusion_header_value' set) OR a URI (and have 'waf_bot_control_exclusion_uri' set)."
+  type = list(object({
+    waf_bot_control_exclusion_header         = optional(string)             // Name of header to exclude from WAF bot control
+    waf_bot_control_exclusion_header_value   = optional(string)             // Value of header to exclude from WAF bot control
+    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS") // Match type for the bot control exclusion header
+    waf_bot_control_exclusion_text_transform = optional(string, "NONE")     // Text transformation to apply before matching the exclusion header for WAF bot control
+    waf_bot_control_exclusion_uri            = optional(string)             // URI pattern to exclude from waf
+  }))
 }
 
 variable "acm_create_certificate" {

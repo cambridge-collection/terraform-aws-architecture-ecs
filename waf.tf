@@ -126,29 +126,57 @@ resource "aws_wafv2_web_acl" "this" {
           }
 
           dynamic "scope_down_statement" {
-            for_each = var.waf_bot_control_exclusion_header != null ? [1] : []
+            for_each = length(var.waf_bot_control_exclusions) > 0 ? [1] : []
             content {
               not_statement {
                 statement {
-                  byte_match_statement {
-                    search_string         = var.waf_bot_control_exclusion_header_value
-                    positional_constraint = var.waf_bot_control_exclusion_header_match_type
-                    field_to_match {
-                      single_header {
-                        name = var.waf_bot_control_exclusion_header
+                  or_statement {
+
+                    # Handle header-based exclusions
+                    dynamic "statement" {
+                      for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_header != null]
+                      content {
+                        byte_match_statement {
+                          search_string = statement.value.waf_bot_control_exclusion_header_value
+                          field_to_match {
+                            single_header {
+                              name = statement.value.waf_bot_control_exclusion_header
+                            }
+                          }
+                          text_transformation {
+                            priority = 0
+                            type     = statement.value.waf_bot_control_exclusion_text_transform
+                          }
+                          positional_constraint = statement.value.waf_bot_control_exclusion_match_type
+                        }
                       }
                     }
-                    text_transformation {
-                      type     = var.waf_bot_control_exclusion_header_text_transform
-                      priority = 0
+
+                    # Handle URI-based exclusions
+                    dynamic "statement" {
+                      for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_uri != null]
+                      content {
+                        byte_match_statement {
+                          search_string = statement.value.waf_bot_control_exclusion_uri
+                          field_to_match {
+                            uri_path {}
+                          }
+                          text_transformation {
+                            priority = 0
+                            type     = statement.value.waf_bot_control_exclusion_text_transform
+                          }
+                          positional_constraint = statement.value.waf_bot_control_exclusion_match_type
+                        }
+                      }
                     }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+
+                  } # End or_statement
+                }   # End statement
+              }     # End not_statement
+            }       # End scope_down_statement
+          }         # End dynamic scope_down_statement
+        }           # End managed_rule_group_statement
+      }             # End statement
 
       override_action {
         none {}
