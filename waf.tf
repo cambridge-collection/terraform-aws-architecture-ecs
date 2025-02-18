@@ -125,6 +125,26 @@ resource "aws_wafv2_web_acl" "this" {
             }
           }
 
+          dynamic "rule_action_override" {
+            for_each = var.waf_bot_control_enable_action_overrides ? [
+              {
+                name = "TGT_SignalAutomatedBrowser"
+              },
+              {
+                name = "TGT_VolumetricSession"
+              },
+              {
+                name = "GT_SignalBrowserInconsistency"
+              }
+            ] : []
+            content {
+              name = rule_action_override.value.name
+              action_to_use {
+                challenge {}
+              }
+            }
+          }
+
           dynamic "scope_down_statement" {
             for_each = length(var.waf_bot_control_exclusions) > 0 ? [1] : []
             content {

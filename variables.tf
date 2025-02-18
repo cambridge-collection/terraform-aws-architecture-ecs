@@ -346,6 +346,12 @@ variable "waf_bot_control_exclusions" {
   }))
 }
 
+variable "waf_bot_control_enable_action_overrides" {
+  description = "This will prevent the actions that normally cause a capcha response and instead set the level to challenge."
+  type        = bool
+  default     = false
+}
+
 variable "acm_create_certificate" {
   type        = bool
   description = "Whether to create a certificate in Amazon Certificate Manager"
