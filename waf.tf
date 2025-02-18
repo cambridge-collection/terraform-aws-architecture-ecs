@@ -126,19 +126,9 @@ resource "aws_wafv2_web_acl" "this" {
           }
 
           dynamic "rule_action_override" {
-            for_each = var.waf_bot_control_enable_action_overrides ? [
-              {
-                name = "TGT_SignalAutomatedBrowser"
-              },
-              {
-                name = "TGT_VolumetricSession"
-              },
-              {
-                name = "GT_SignalBrowserInconsistency"
-              }
-            ] : []
+            for_each = toset(var.waf_bot_control_rule_action_overrides)
             content {
-              name = rule_action_override.value.name
+              name = rule_action_override.key
               action_to_use {
                 challenge {}
               }
