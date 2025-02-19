@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v3.0.0...v3.1.0) (2025-02-19)
+
+
+### Features
+
+* Add a variable to allow overriding of some WAF action to challenge from captcha ([8f13e75](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/8f13e75e966b1b968a72453fe79b17b53f2e0f31))
+* Update the override actions for WAF to list ([29f424c](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/29f424cfd82a1b3ad4523c7f9292cd2f27b7acfc))
+
+
+### Bug Fixes
+
+* **waf:** Add default value to waf_bot_control_exclusions input ([26912a3](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/26912a38e45252a98dee611054efd5e031488367))
+
 ## [3.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v2.5.1...v3.0.0) (2025-02-04)
 
 
