@@ -39,7 +39,10 @@ resource "aws_autoscaling_group" "this" {
   }
 
   lifecycle {
-    ignore_changes = [target_group_arns] # NOTE this field will be updated by addition of aws_autoscaling_attachment resources
+    ignore_changes = [
+      target_group_arns, # NOTE this field will be updated by addition of aws_autoscaling_attachment resources
+      desired_capacity   # NOTE this field will be updated by the ECS cluster capacity provider
+    ]
   }
 }
 
