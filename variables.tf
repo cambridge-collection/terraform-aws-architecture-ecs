@@ -204,6 +204,18 @@ variable "ecs_capacity_provider_managed_termination_protection" {
   default     = "ENABLED"
 }
 
+variable "ecs_default_capacity_provider_strategy_base" {
+  type        = number
+  description = "Designates how many tasks, at a minimum, to run on the default capacity provider"
+  default     = 1
+}
+
+variable "ecs_default_capacity_provider_strategy_weight" {
+  type        = number
+  description = "Designates the percentage of the total number of tasks that should use the default capacity provider"
+  default     = 100
+}
+
 variable "alb_internal" {
   type        = bool
   description = "Whether the ALB should be internal (not public facing)"
