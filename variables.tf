@@ -336,14 +336,15 @@ variable "waf_bot_control_inspection_level" {
 }
 
 variable "waf_bot_control_exclusions" {
-  description = "A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf_bot_control_exclusion_header' and 'waf_bot_control_exclusion_header_value' set) OR a URI (and have 'waf_bot_control_exclusion_uri' set)."
   type = list(object({
-    waf_bot_control_exclusion_header         = optional(string)             // Name of header to exclude from WAF bot control
-    waf_bot_control_exclusion_header_value   = optional(string)             // Value of header to exclude from WAF bot control
-    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS") // Match type for the bot control exclusion header
-    waf_bot_control_exclusion_text_transform = optional(string, "NONE")     // Text transformation to apply before matching the exclusion header for WAF bot control
-    waf_bot_control_exclusion_uri            = optional(string)             // URI pattern to exclude from waf
+    waf_bot_control_exclusion_header         = optional(string)
+    waf_bot_control_exclusion_header_value   = optional(string)
+    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")
+    waf_bot_control_exclusion_text_transform = optional(string, "NONE")
+    waf_bot_control_exclusion_uri            = optional(string)
   }))
+  description = "A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf_bot_control_exclusion_header' and 'waf_bot_control_exclusion_header_value' set) OR a URI (and have 'waf_bot_control_exclusion_uri' set)."
+  default     = []
 }
 
 variable "waf_bot_control_rule_action_overrides" {
