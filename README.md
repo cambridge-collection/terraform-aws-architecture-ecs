@@ -34,6 +34,7 @@ No modules.
 | [aws_acm_certificate.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_default_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_ecs_capacity_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider) | resource |
 | [aws_ecs_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
@@ -87,7 +88,7 @@ No modules.
 | [aws_wafv2_web_acl.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
 | [aws_ami.ecs_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
+| [aws_cloudwatch_log_group.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
 | [aws_ec2_managed_prefix_list.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_ec2_managed_prefix_list.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -123,7 +124,10 @@ No modules.
 | <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_protect_from_scale_in"></a> [asg\_protect\_from\_scale\_in](#input\_asg\_protect\_from\_scale\_in) | Whether newly launched instances are automatically protected from termination | `bool` | `true` | no |
 | <a name="input_asg_termination_policies"></a> [asg\_termination\_policies](#input\_asg\_termination\_policies) | Termination Policies used by the Autoscaling Group | `list(string)` | <pre>[<br>  "OldestLaunchTemplate"<br>]</pre> | no |
-| <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the cloudwatch log group | `string` | n/a | yes |
+| <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the CloudWatch log group | `string` | n/a | yes |
+| <a name="input_cloudwatch_log_group_exists"></a> [cloudwatch\_log\_group\_exists](#input\_cloudwatch\_log\_group\_exists) | Whether the CloudWatch log group already exists | `bool` | `true` | no |
+| <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Retention in days for records in the log group. The default of 0 means records never expire | `number` | `0` | no |
+| <a name="input_cloudwatch_log_group_skip_destroy"></a> [cloudwatch\_log\_group\_skip\_destroy](#input\_cloudwatch\_log\_group\_skip\_destroy) | Whether to skip deletion of the log group on terraform destroy | `bool` | `true` | no |
 | <a name="input_ec2_additional_userdata"></a> [ec2\_additional\_userdata](#input\_ec2\_additional\_userdata) | Additional userdata to append to the launch template configuration | `string` | `""` | no |
 | <a name="input_ec2_ebs_volume_type"></a> [ec2\_ebs\_volume\_type](#input\_ec2\_ebs\_volume\_type) | Volume type used in EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | EC2 Instance type used by EC2 Instances | `string` | `"t3.small"` | no |
@@ -148,7 +152,7 @@ No modules.
 | <a name="input_vpc_peering_vpc_ids"></a> [vpc\_peering\_vpc\_ids](#input\_vpc\_peering\_vpc\_ids) | List of VPC IDS for peering with the VPC | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_public_ip"></a> [vpc\_public\_subnet\_public\_ip](#input\_vpc\_public\_subnet\_public\_ip) | Whether to automatically assign public IP addresses in the public subnets | `bool` | `false` | no |
 | <a name="input_waf_bot_control_enable_machine_learning"></a> [waf\_bot\_control\_enable\_machine\_learning](#input\_waf\_bot\_control\_enable\_machine\_learning) | Determines whether to use machine learning to analyze your web traffic for bot-related activity | `bool` | `false` | no |
-| <a name="input_waf_bot_control_exclusions"></a> [waf\_bot\_control\_exclusions](#input\_waf\_bot\_control\_exclusions) | A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf\_bot\_control\_exclusion\_header' and 'waf\_bot\_control\_exclusion\_header\_value' set) OR a URI (and have 'waf\_bot\_control\_exclusion\_uri' set). | <pre>list(object({<br>    waf_bot_control_exclusion_header         = optional(string)<br>    waf_bot_control_exclusion_header_value   = optional(string)<br>    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")<br>    waf_bot_control_exclusion_text_transform = optional(string, "NONE")<br>    waf_bot_control_exclusion_uri            = optional(string)<br>  }))</pre> | `{}` | no |
+| <a name="input_waf_bot_control_exclusions"></a> [waf\_bot\_control\_exclusions](#input\_waf\_bot\_control\_exclusions) | A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf\_bot\_control\_exclusion\_header' and 'waf\_bot\_control\_exclusion\_header\_value' set) OR a URI (and have 'waf\_bot\_control\_exclusion\_uri' set). | <pre>list(object({<br>    waf_bot_control_exclusion_header         = optional(string)<br>    waf_bot_control_exclusion_header_value   = optional(string)<br>    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")<br>    waf_bot_control_exclusion_text_transform = optional(string, "NONE")<br>    waf_bot_control_exclusion_uri            = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_waf_bot_control_inspection_level"></a> [waf\_bot\_control\_inspection\_level](#input\_waf\_bot\_control\_inspection\_level) | The inspection level to use for the WAF Bot Control rule group. Must be one of COMMON or TARGETED | `string` | `"COMMON"` | no |
 | <a name="input_waf_bot_control_rule_action_overrides"></a> [waf\_bot\_control\_rule\_action\_overrides](#input\_waf\_bot\_control\_rule\_action\_overrides) | This will prevent the actions that normally cause a capcha response and instead set the level to challenge. | `list(string)` | `[]` | no |
 | <a name="input_waf_ip_set_addresses"></a> [waf\_ip\_set\_addresses](#input\_waf\_ip\_set\_addresses) | List of IPs for WAF IP Set Safelist | `list(string)` | <pre>[<br>  "131.111.0.0/16"<br>]</pre> | no |
