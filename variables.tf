@@ -278,7 +278,25 @@ variable "alb_listener_fixed_response_status_code" {
 
 variable "cloudwatch_log_group" {
   type        = string
-  description = "Name of the cloudwatch log group"
+  description = "Name of the CloudWatch log group"
+}
+
+variable "cloudwatch_log_group_exists" {
+  type        = bool
+  description = "Whether the CloudWatch log group already exists"
+  default     = true
+}
+
+variable "cloudwatch_log_group_skip_destroy" {
+  type        = bool
+  description = "Whether to skip deletion of the log group on terraform destroy"
+  default     = true
+}
+
+variable "cloudwatch_log_group_retention_in_days" {
+  type        = number
+  description = "Retention in days for records in the log group. The default of 0 means records never expire"
+  default     = 0
 }
 
 variable "waf_use_ip_restrictions" {
