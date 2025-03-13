@@ -39,6 +39,17 @@ resource "aws_subnet" "public_b" {
   }
 }
 
+resource "aws_subnet" "public_c" {
+  availability_zone       = "${data.aws_region.current.name}c"
+  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 4)
+  vpc_id                  = aws_vpc.this.id
+  map_public_ip_on_launch = var.vpc_public_subnet_public_ip
+
+  tags = {
+    Name = "${var.name_prefix}-subnet-public-c"
+  }
+}
+
 resource "aws_subnet" "private_a" {
   availability_zone       = "${data.aws_region.current.name}a"
   cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 2)
@@ -58,6 +69,17 @@ resource "aws_subnet" "private_b" {
 
   tags = {
     Name = "${var.name_prefix}-subnet-private-b"
+  }
+}
+
+resource "aws_subnet" "private_c" {
+  availability_zone       = "${data.aws_region.current.name}c"
+  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 5)
+  vpc_id                  = aws_vpc.this.id
+  map_public_ip_on_launch = false # always false
+
+  tags = {
+    Name = "${var.name_prefix}-subnet-private-c"
   }
 }
 
@@ -107,6 +129,19 @@ resource "aws_route_table" "private_b" {
   }
 }
 
+resource "aws_route_table" "private_c" {
+  vpc_id = aws_vpc.this.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_c.id
+  }
+
+  tags = {
+    Name = "${var.name_prefix}-rtb-private_${data.aws_region.current.name}c"
+  }
+}
+
 ################################################################################
 # Route Table Subnet Associations
 ################################################################################
@@ -121,6 +156,11 @@ resource "aws_route_table_association" "public_b" {
   subnet_id      = aws_subnet.public_b.id
 }
 
+resource "aws_route_table_association" "public_c" {
+  route_table_id = aws_route_table.public.id
+  subnet_id      = aws_subnet.public_c.id
+}
+
 resource "aws_route_table_association" "private_a" {
   route_table_id = aws_route_table.private_a.id
   subnet_id      = aws_subnet.private_a.id
@@ -129,6 +169,11 @@ resource "aws_route_table_association" "private_a" {
 resource "aws_route_table_association" "private_b" {
   route_table_id = aws_route_table.private_b.id
   subnet_id      = aws_subnet.private_b.id
+}
+
+resource "aws_route_table_association" "private_c" {
+  route_table_id = aws_route_table.private_c.id
+  subnet_id      = aws_subnet.private_c.id
 }
 
 ################################################################################
@@ -240,6 +285,19 @@ resource "aws_nat_gateway" "nat_b" {
   depends_on = [aws_internet_gateway.this]
 }
 
+resource "aws_nat_gateway" "nat_c" {
+  allocation_id = aws_eip.nat_c.id
+  subnet_id     = aws_subnet.public_c.id
+
+  tags = {
+    Name = "${var.name_prefix}-nat-c"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.this]
+}
+
 resource "aws_eip" "nat_a" {
   domain = "vpc"
 
@@ -253,6 +311,14 @@ resource "aws_eip" "nat_b" {
 
   tags = {
     Name = "${var.name_prefix}-nat-1b-elastic-ip"
+  }
+}
+
+resource "aws_eip" "nat_c" {
+  domain = "vpc"
+
+  tags = {
+    Name = "${var.name_prefix}-nat-1c-elastic-ip"
   }
 }
 
