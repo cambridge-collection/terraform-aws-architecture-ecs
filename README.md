@@ -128,6 +128,7 @@ No modules.
 | <a name="input_cloudwatch_log_group_exists"></a> [cloudwatch\_log\_group\_exists](#input\_cloudwatch\_log\_group\_exists) | Whether the CloudWatch log group already exists | `bool` | `true` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Retention in days for records in the log group. The default of 0 means records never expire | `number` | `0` | no |
 | <a name="input_cloudwatch_log_group_skip_destroy"></a> [cloudwatch\_log\_group\_skip\_destroy](#input\_cloudwatch\_log\_group\_skip\_destroy) | Whether to skip deletion of the log group on terraform destroy | `bool` | `true` | no |
+| <a name="input_ec2_additional_ecs_config"></a> [ec2\_additional\_ecs\_config](#input\_ec2\_additional\_ecs\_config) | Additional text to append to the /etc/ecs/ecs.config file configuring the ecs agent | `string` | `""` | no |
 | <a name="input_ec2_additional_userdata"></a> [ec2\_additional\_userdata](#input\_ec2\_additional\_userdata) | Additional userdata to append to the launch template configuration | `string` | `""` | no |
 | <a name="input_ec2_ebs_volume_type"></a> [ec2\_ebs\_volume\_type](#input\_ec2\_ebs\_volume\_type) | Volume type used in EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | EC2 Instance type used by EC2 Instances | `string` | `"t3.small"` | no |

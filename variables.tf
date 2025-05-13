@@ -111,6 +111,12 @@ variable "ec2_additional_userdata" {
   default     = ""
 }
 
+variable "ec2_additional_ecs_config" {
+  type        = string
+  description = "Additional text to append to the /etc/ecs/ecs.config file configuring the ecs agent"
+  default     = ""
+}
+
 variable "ec2_ebs_volume_type" {
   type        = string
   description = "Volume type used in EBS volumes"

@@ -60,8 +60,9 @@ resource "aws_launch_template" "this" {
   key_name               = var.ec2_keypair
   update_default_version = true
   user_data = base64encode(templatefile("${path.module}/userdata.sh.ttfpl", {
-    ecs_cluster         = aws_ecs_cluster.this.name
-    additional_userdata = var.ec2_additional_userdata
+    ecs_cluster           = aws_ecs_cluster.this.name
+    additional_userdata   = var.ec2_additional_userdata
+    additional_ecs_config = var.ec2_additional_ecs_config
   }))
 
   iam_instance_profile {
