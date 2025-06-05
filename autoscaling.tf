@@ -10,7 +10,7 @@ resource "aws_autoscaling_group" "this" {
   default_cooldown          = var.asg_default_cooldown
   health_check_type         = var.asg_health_check_type
   health_check_grace_period = var.asg_health_check_grace_period
-  vpc_zone_identifier       = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+  vpc_zone_identifier       = aws_subnet.private.*.id
   termination_policies      = var.asg_termination_policies
   service_linked_role_arn   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling" // AWS standard role
   metrics_granularity       = var.asg_metrics_granularity

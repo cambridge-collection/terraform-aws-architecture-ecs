@@ -21,6 +21,24 @@ variable "vpc_public_subnet_public_ip" {
   default     = false
 }
 
+variable "vpc_subnets_count" {
+  type        = number
+  description = "The number of subnets to build in the VPC"
+  default     = 2
+}
+
+variable "vpc_public_subnet_cidr_blocks" {
+  type        = list(string)
+  description = "Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks"
+  default     = []
+}
+
+variable "vpc_private_subnet_cidr_blocks" {
+  type        = list(string)
+  description = "Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks"
+  default     = []
+}
+
 variable "vpc_endpoints_create" {
   type        = bool
   description = "Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact"

@@ -2,7 +2,7 @@ resource "aws_lb" "this" {
   name               = trimsuffix(substr("${var.name_prefix}-alb", 0, 32), "-")
   internal           = var.alb_internal
   load_balancer_type = "application"
-  subnets            = var.alb_internal ? [aws_subnet.private_a.id, aws_subnet.private_b.id] : [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  subnets            = var.alb_internal ? aws_subnet.private.*.id : aws_subnet.public.*.id
   security_groups = [
     aws_security_group.alb.id
   ]
