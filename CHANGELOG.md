@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v3.1.0...v4.0.0) (2025-06-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **vpc:** Resource labels have changed requiring moved blocks
+* **tf:** Requires providers argument to be passed to the module
+
+### Features
+
+* **asg:** Add desired_capacity to ignore_changes argument of ASG ([6dd46c2](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/6dd46c26de4bccd7b36f3b11e8c495659d3a834d))
+* **ec2:** Allow additional configuration for ECS agent ([507cc30](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/507cc306a3d46dcfc315b110e29f59b4e2a9f168))
+* **ecs:** Add default capacity provider strategy to ECS cluster ([ffcf2a6](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/ffcf2a6f37f52f4d5f67ca9d8c76837c35a4844c))
+* **logs:** Add ability to create a cloudwatch log group ([86e7fef](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/86e7fefeaf195595f4f1b07778fda0bf0ed6c9f6))
+* **vpc:** Build subnets by count ([59716e4](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/59716e4a80cb65149db84a355d30cad75b3cb981))
+
+
+### Bug Fixes
+
+* **tf:** Remove provider.tf allowing us-east-1 provider to be overridden ([90acf1b](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/90acf1bc2b400c26c6420ef7c70fb2ee3e211c2a))
+
 ## [3.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v3.0.0...v3.1.0) (2025-02-19)
 
 
