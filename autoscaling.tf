@@ -10,7 +10,7 @@ resource "aws_autoscaling_group" "this" {
   default_cooldown          = var.asg_default_cooldown
   health_check_type         = var.asg_health_check_type
   health_check_grace_period = var.asg_health_check_grace_period
-  vpc_zone_identifier       = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+  vpc_zone_identifier       = aws_subnet.private.*.id
   termination_policies      = var.asg_termination_policies
   service_linked_role_arn   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling" // AWS standard role
   metrics_granularity       = var.asg_metrics_granularity
@@ -39,7 +39,10 @@ resource "aws_autoscaling_group" "this" {
   }
 
   lifecycle {
-    ignore_changes = [target_group_arns] # NOTE this field will be updated by addition of aws_autoscaling_attachment resources
+    ignore_changes = [
+      target_group_arns, # NOTE this field will be updated by addition of aws_autoscaling_attachment resources
+      desired_capacity   # NOTE this field will be updated by the ECS cluster capacity provider
+    ]
   }
 }
 
@@ -57,8 +60,9 @@ resource "aws_launch_template" "this" {
   key_name               = var.ec2_keypair
   update_default_version = true
   user_data = base64encode(templatefile("${path.module}/userdata.sh.ttfpl", {
-    ecs_cluster         = aws_ecs_cluster.this.name
-    additional_userdata = var.ec2_additional_userdata
+    ecs_cluster           = aws_ecs_cluster.this.name
+    additional_userdata   = var.ec2_additional_userdata
+    additional_ecs_config = var.ec2_additional_ecs_config
   }))
 
   iam_instance_profile {

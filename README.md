@@ -34,12 +34,12 @@ No modules.
 | [aws_acm_certificate.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_default_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_ecs_capacity_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider) | resource |
 | [aws_ecs_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_cluster_capacity_providers.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster_capacity_providers) | resource |
-| [aws_eip.nat_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
-| [aws_eip.nat_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_eip.nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_iam_instance_profile.instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_role.instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.ec2_container_service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -48,19 +48,15 @@ No modules.
 | [aws_launch_template.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
 | [aws_lb.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
-| [aws_nat_gateway.nat_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
-| [aws_nat_gateway.nat_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
+| [aws_nat_gateway.nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
 | [aws_route.cudl_vpc_ec2_route_igw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route53_record.acm_validation_cname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_zone.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_route_table.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
-| [aws_route_table.private_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
-| [aws_route_table.private_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
+| [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
-| [aws_route_table_association.private_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_route_table_association.private_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_route_table_association.public_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_route_table_association.public_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_route_table_association.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_route_table_association.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_security_group.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -73,10 +69,8 @@ No modules.
 | [aws_security_group_rule.vpc_endpoint_egress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoint_ingress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoints_egress_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_subnet.private_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_subnet.private_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_subnet.public_a](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_subnet.public_b](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_dhcp_options.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options) | resource |
 | [aws_vpc_dhcp_options_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options_association) | resource |
@@ -86,8 +80,9 @@ No modules.
 | [aws_wafv2_ip_set.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_ip_set) | resource |
 | [aws_wafv2_web_acl.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
 | [aws_ami.ecs_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
+| [aws_cloudwatch_log_group.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
 | [aws_ec2_managed_prefix_list.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_ec2_managed_prefix_list.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -123,7 +118,11 @@ No modules.
 | <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_protect_from_scale_in"></a> [asg\_protect\_from\_scale\_in](#input\_asg\_protect\_from\_scale\_in) | Whether newly launched instances are automatically protected from termination | `bool` | `true` | no |
 | <a name="input_asg_termination_policies"></a> [asg\_termination\_policies](#input\_asg\_termination\_policies) | Termination Policies used by the Autoscaling Group | `list(string)` | <pre>[<br>  "OldestLaunchTemplate"<br>]</pre> | no |
-| <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the cloudwatch log group | `string` | n/a | yes |
+| <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the CloudWatch log group | `string` | n/a | yes |
+| <a name="input_cloudwatch_log_group_exists"></a> [cloudwatch\_log\_group\_exists](#input\_cloudwatch\_log\_group\_exists) | Whether the CloudWatch log group already exists | `bool` | `true` | no |
+| <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Retention in days for records in the log group. The default of 0 means records never expire | `number` | `0` | no |
+| <a name="input_cloudwatch_log_group_skip_destroy"></a> [cloudwatch\_log\_group\_skip\_destroy](#input\_cloudwatch\_log\_group\_skip\_destroy) | Whether to skip deletion of the log group on terraform destroy | `bool` | `true` | no |
+| <a name="input_ec2_additional_ecs_config"></a> [ec2\_additional\_ecs\_config](#input\_ec2\_additional\_ecs\_config) | Additional text to append to the /etc/ecs/ecs.config file configuring the ecs agent | `string` | `""` | no |
 | <a name="input_ec2_additional_userdata"></a> [ec2\_additional\_userdata](#input\_ec2\_additional\_userdata) | Additional userdata to append to the launch template configuration | `string` | `""` | no |
 | <a name="input_ec2_ebs_volume_type"></a> [ec2\_ebs\_volume\_type](#input\_ec2\_ebs\_volume\_type) | Volume type used in EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | EC2 Instance type used by EC2 Instances | `string` | `"t3.small"` | no |
@@ -131,6 +130,8 @@ No modules.
 | <a name="input_ecs_capacity_provider_managed_termination_protection"></a> [ecs\_capacity\_provider\_managed\_termination\_protection](#input\_ecs\_capacity\_provider\_managed\_termination\_protection) | Enables or disables container-aware termination of instances in the ASG when scale-in happens | `string` | `"ENABLED"` | no |
 | <a name="input_ecs_capacity_provider_status"></a> [ecs\_capacity\_provider\_status](#input\_ecs\_capacity\_provider\_status) | Enables or disables managed scaling on ASG | `string` | `"ENABLED"` | no |
 | <a name="input_ecs_capacity_provider_target_capacity_percent"></a> [ecs\_capacity\_provider\_target\_capacity\_percent](#input\_ecs\_capacity\_provider\_target\_capacity\_percent) | Percentage target capacity utilization for the autscaling group instances | `number` | `100` | no |
+| <a name="input_ecs_default_capacity_provider_strategy_base"></a> [ecs\_default\_capacity\_provider\_strategy\_base](#input\_ecs\_default\_capacity\_provider\_strategy\_base) | Designates how many tasks, at a minimum, to run on the default capacity provider | `number` | `1` | no |
+| <a name="input_ecs_default_capacity_provider_strategy_weight"></a> [ecs\_default\_capacity\_provider\_strategy\_weight](#input\_ecs\_default\_capacity\_provider\_strategy\_weight) | Designates the percentage of the total number of tasks that should use the default capacity provider | `number` | `100` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Name prefix of the ECS Cluster and associated resources | `string` | n/a | yes |
 | <a name="input_route53_delegation_set_id"></a> [route53\_delegation\_set\_id](#input\_route53\_delegation\_set\_id) | The ID of the reusable delegation set whose NS records should be assigned to the hosted zone | `string` | `null` | no |
 | <a name="input_route53_zone_domain_name"></a> [route53\_zone\_domain\_name](#input\_route53\_zone\_domain\_name) | Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored | `string` | `null` | no |
@@ -144,9 +145,12 @@ No modules.
 | <a name="input_vpc_endpoint_services"></a> [vpc\_endpoint\_services](#input\_vpc\_endpoint\_services) | List of services to create VPC Endpoints for | `list(string)` | <pre>[<br>  "ssmmessages",<br>  "ssm",<br>  "ec2messages",<br>  "ecr.api",<br>  "ecr.dkr",<br>  "ecs",<br>  "ecs-agent",<br>  "ecs-telemetry",<br>  "logs"<br>]</pre> | no |
 | <a name="input_vpc_endpoints_create"></a> [vpc\_endpoints\_create](#input\_vpc\_endpoints\_create) | Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact | `bool` | `false` | no |
 | <a name="input_vpc_peering_vpc_ids"></a> [vpc\_peering\_vpc\_ids](#input\_vpc\_peering\_vpc\_ids) | List of VPC IDS for peering with the VPC | `list(string)` | `[]` | no |
+| <a name="input_vpc_private_subnet_cidr_blocks"></a> [vpc\_private\_subnet\_cidr\_blocks](#input\_vpc\_private\_subnet\_cidr\_blocks) | Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks | `list(string)` | `[]` | no |
+| <a name="input_vpc_public_subnet_cidr_blocks"></a> [vpc\_public\_subnet\_cidr\_blocks](#input\_vpc\_public\_subnet\_cidr\_blocks) | Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_public_ip"></a> [vpc\_public\_subnet\_public\_ip](#input\_vpc\_public\_subnet\_public\_ip) | Whether to automatically assign public IP addresses in the public subnets | `bool` | `false` | no |
+| <a name="input_vpc_subnets_count"></a> [vpc\_subnets\_count](#input\_vpc\_subnets\_count) | The number of subnets to build in the VPC | `number` | `2` | no |
 | <a name="input_waf_bot_control_enable_machine_learning"></a> [waf\_bot\_control\_enable\_machine\_learning](#input\_waf\_bot\_control\_enable\_machine\_learning) | Determines whether to use machine learning to analyze your web traffic for bot-related activity | `bool` | `false` | no |
-| <a name="input_waf_bot_control_exclusions"></a> [waf\_bot\_control\_exclusions](#input\_waf\_bot\_control\_exclusions) | A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf\_bot\_control\_exclusion\_header' and 'waf\_bot\_control\_exclusion\_header\_value' set) OR a URI (and have 'waf\_bot\_control\_exclusion\_uri' set). | <pre>list(object({<br>    waf_bot_control_exclusion_header         = optional(string)<br>    waf_bot_control_exclusion_header_value   = optional(string)<br>    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")<br>    waf_bot_control_exclusion_text_transform = optional(string, "NONE")<br>    waf_bot_control_exclusion_uri            = optional(string)<br>  }))</pre> | `{}` | no |
+| <a name="input_waf_bot_control_exclusions"></a> [waf\_bot\_control\_exclusions](#input\_waf\_bot\_control\_exclusions) | A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf\_bot\_control\_exclusion\_header' and 'waf\_bot\_control\_exclusion\_header\_value' set) OR a URI (and have 'waf\_bot\_control\_exclusion\_uri' set). | <pre>list(object({<br>    waf_bot_control_exclusion_header         = optional(string)<br>    waf_bot_control_exclusion_header_value   = optional(string)<br>    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")<br>    waf_bot_control_exclusion_text_transform = optional(string, "NONE")<br>    waf_bot_control_exclusion_uri            = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_waf_bot_control_inspection_level"></a> [waf\_bot\_control\_inspection\_level](#input\_waf\_bot\_control\_inspection\_level) | The inspection level to use for the WAF Bot Control rule group. Must be one of COMMON or TARGETED | `string` | `"COMMON"` | no |
 | <a name="input_waf_bot_control_rule_action_overrides"></a> [waf\_bot\_control\_rule\_action\_overrides](#input\_waf\_bot\_control\_rule\_action\_overrides) | This will prevent the actions that normally cause a capcha response and instead set the level to challenge. | `list(string)` | `[]` | no |
 | <a name="input_waf_ip_set_addresses"></a> [waf\_ip\_set\_addresses](#input\_waf\_ip\_set\_addresses) | List of IPs for WAF IP Set Safelist | `list(string)` | <pre>[<br>  "131.111.0.0/16"<br>]</pre> | no |

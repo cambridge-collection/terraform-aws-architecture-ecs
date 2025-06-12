@@ -21,6 +21,24 @@ variable "vpc_public_subnet_public_ip" {
   default     = false
 }
 
+variable "vpc_subnets_count" {
+  type        = number
+  description = "The number of subnets to build in the VPC"
+  default     = 2
+}
+
+variable "vpc_public_subnet_cidr_blocks" {
+  type        = list(string)
+  description = "Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks"
+  default     = []
+}
+
+variable "vpc_private_subnet_cidr_blocks" {
+  type        = list(string)
+  description = "Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks"
+  default     = []
+}
+
 variable "vpc_endpoints_create" {
   type        = bool
   description = "Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact"
@@ -108,6 +126,12 @@ variable "ec2_instance_type" {
 variable "ec2_additional_userdata" {
   type        = string
   description = "Additional userdata to append to the launch template configuration"
+  default     = ""
+}
+
+variable "ec2_additional_ecs_config" {
+  type        = string
+  description = "Additional text to append to the /etc/ecs/ecs.config file configuring the ecs agent"
   default     = ""
 }
 
@@ -204,6 +228,18 @@ variable "ecs_capacity_provider_managed_termination_protection" {
   default     = "ENABLED"
 }
 
+variable "ecs_default_capacity_provider_strategy_base" {
+  type        = number
+  description = "Designates how many tasks, at a minimum, to run on the default capacity provider"
+  default     = 1
+}
+
+variable "ecs_default_capacity_provider_strategy_weight" {
+  type        = number
+  description = "Designates the percentage of the total number of tasks that should use the default capacity provider"
+  default     = 100
+}
+
 variable "alb_internal" {
   type        = bool
   description = "Whether the ALB should be internal (not public facing)"
@@ -266,7 +302,25 @@ variable "alb_listener_fixed_response_status_code" {
 
 variable "cloudwatch_log_group" {
   type        = string
-  description = "Name of the cloudwatch log group"
+  description = "Name of the CloudWatch log group"
+}
+
+variable "cloudwatch_log_group_exists" {
+  type        = bool
+  description = "Whether the CloudWatch log group already exists"
+  default     = true
+}
+
+variable "cloudwatch_log_group_skip_destroy" {
+  type        = bool
+  description = "Whether to skip deletion of the log group on terraform destroy"
+  default     = true
+}
+
+variable "cloudwatch_log_group_retention_in_days" {
+  type        = number
+  description = "Retention in days for records in the log group. The default of 0 means records never expire"
+  default     = 0
 }
 
 variable "waf_use_ip_restrictions" {

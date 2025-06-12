@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-echo "ECS_CLUSTER=${ecs_cluster}" >> /etc/ecs/ecs.config
+cat > /etc/ecs/ecs.config <<EOF
+ECS_CLUSTER=${ecs_cluster}
+${additional_ecs_config}
+EOF
 
 # NOTE running yum update needs an outbound route to internet. In a private subnet, will need
 # a forward proxy to allow this

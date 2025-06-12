@@ -4,12 +4,12 @@ output "vpc_id" {
 }
 
 output "vpc_public_subnet_ids" {
-  value       = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  value       = aws_subnet.public.*.id
   description = "Public Subnet IDs"
 }
 
 output "vpc_private_subnet_ids" {
-  value       = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+  value       = aws_subnet.private.*.id
   description = "Private Subnet IDs"
 }
 
@@ -84,12 +84,12 @@ output "route53_public_hosted_zone" {
 }
 
 output "cloudwatch_log_group_arn" {
-  value       = data.aws_cloudwatch_log_group.this.arn
+  value       = var.cloudwatch_log_group_exists ? data.aws_cloudwatch_log_group.existing.0.arn : aws_cloudwatch_log_group.this.0.arn
   description = "ARN of the CloudWatch Log Group"
 }
 
 output "cloudwatch_log_group_name" {
-  value       = data.aws_cloudwatch_log_group.this.name
+  value       = var.cloudwatch_log_group_exists ? data.aws_cloudwatch_log_group.existing.0.name : aws_cloudwatch_log_group.this.0.name
   description = "Name of the CloudWatch Log Group"
 }
 

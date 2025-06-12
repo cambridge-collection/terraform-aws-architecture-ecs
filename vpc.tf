@@ -17,47 +17,29 @@ resource "aws_vpc" "this" {
 # Subnets
 ################################################################################
 
-resource "aws_subnet" "public_a" {
-  availability_zone       = "${data.aws_region.current.name}a"
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 0)
+resource "aws_subnet" "public" {
+  count = var.vpc_subnets_count
+
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  cidr_block              = length(var.vpc_public_subnet_cidr_blocks) > 0 ? var.vpc_public_subnet_cidr_blocks[count.index] : cidrsubnet(var.vpc_cidr_block, 4, count.index)
   vpc_id                  = aws_vpc.this.id
   map_public_ip_on_launch = var.vpc_public_subnet_public_ip
 
   tags = {
-    Name = "${var.name_prefix}-subnet-public-a"
+    Name = "${var.name_prefix}-subnet-public-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
-resource "aws_subnet" "public_b" {
-  availability_zone       = "${data.aws_region.current.name}b"
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 1)
-  vpc_id                  = aws_vpc.this.id
-  map_public_ip_on_launch = var.vpc_public_subnet_public_ip
+resource "aws_subnet" "private" {
+  count = var.vpc_subnets_count
 
-  tags = {
-    Name = "${var.name_prefix}-subnet-public-b"
-  }
-}
-
-resource "aws_subnet" "private_a" {
-  availability_zone       = "${data.aws_region.current.name}a"
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 2)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  cidr_block              = length(var.vpc_private_subnet_cidr_blocks) > 0 ? var.vpc_private_subnet_cidr_blocks[count.index] : cidrsubnet(var.vpc_cidr_block, 4, length(data.aws_availability_zones.available.names) + count.index)
   vpc_id                  = aws_vpc.this.id
   map_public_ip_on_launch = false # always false
 
   tags = {
-    Name = "${var.name_prefix}-subnet-private-a"
-  }
-}
-
-resource "aws_subnet" "private_b" {
-  availability_zone       = "${data.aws_region.current.name}b"
-  cidr_block              = cidrsubnet(var.vpc_cidr_block, 4, 3)
-  vpc_id                  = aws_vpc.this.id
-  map_public_ip_on_launch = false # always false
-
-  tags = {
-    Name = "${var.name_prefix}-subnet-private-b"
+    Name = "${var.name_prefix}-subnet-private-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
@@ -81,29 +63,18 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route_table" "private_a" {
+resource "aws_route_table" "private" {
+  count = var.vpc_subnets_count
+
   vpc_id = aws_vpc.this.id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_a.id
+    nat_gateway_id = aws_nat_gateway.nat[count.index].id
   }
 
   tags = {
-    Name = "${var.name_prefix}-rtb-private-${data.aws_region.current.name}a"
-  }
-}
-
-resource "aws_route_table" "private_b" {
-  vpc_id = aws_vpc.this.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_b.id
-  }
-
-  tags = {
-    Name = "${var.name_prefix}-rtb-private_${data.aws_region.current.name}b"
+    Name = "${var.name_prefix}-rtb-private-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
@@ -111,24 +82,18 @@ resource "aws_route_table" "private_b" {
 # Route Table Subnet Associations
 ################################################################################
 
-resource "aws_route_table_association" "public_a" {
+resource "aws_route_table_association" "public" {
+  count = var.vpc_subnets_count
+
   route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.public_a.id
+  subnet_id      = aws_subnet.public[count.index].id
 }
 
-resource "aws_route_table_association" "public_b" {
-  route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.public_b.id
-}
+resource "aws_route_table_association" "private" {
+  count = var.vpc_subnets_count
 
-resource "aws_route_table_association" "private_a" {
-  route_table_id = aws_route_table.private_a.id
-  subnet_id      = aws_subnet.private_a.id
-}
-
-resource "aws_route_table_association" "private_b" {
-  route_table_id = aws_route_table.private_b.id
-  subnet_id      = aws_subnet.private_b.id
+  route_table_id = aws_route_table.private[count.index].id
+  subnet_id      = aws_subnet.private[count.index].id
 }
 
 ################################################################################
@@ -174,13 +139,10 @@ resource "aws_route" "cudl_vpc_ec2_route_igw" {
 resource "aws_vpc_endpoint" "s3" {
   count = var.vpc_endpoints_create ? 1 : 0
 
-  vpc_endpoint_type = "Gateway"
-  vpc_id            = aws_vpc.this.id
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
-  route_table_ids = [
-    aws_route_table.private_a.id,
-    aws_route_table.private_b.id
-  ]
+  vpc_endpoint_type   = "Gateway"
+  vpc_id              = aws_vpc.this.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.s3"
+  route_table_ids     = aws_route_table.private.*.id
   private_dns_enabled = false
 
   tags = {
@@ -191,13 +153,10 @@ resource "aws_vpc_endpoint" "s3" {
 resource "aws_vpc_endpoint" "interface" {
   for_each = var.vpc_endpoints_create ? toset(var.vpc_endpoint_services) : toset([])
 
-  vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.this.id
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
-  subnet_ids = [
-    aws_subnet.private_a.id,
-    aws_subnet.private_b.id
-  ]
+  vpc_endpoint_type   = "Interface"
+  vpc_id              = aws_vpc.this.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
+  subnet_ids          = aws_subnet.private.*.id
   security_group_ids  = [aws_security_group.vpc_endpoints.0.id]
   private_dns_enabled = true
 
@@ -214,12 +173,14 @@ resource "aws_vpc_endpoint" "interface" {
 # NAT Gateway
 ################################################################################
 
-resource "aws_nat_gateway" "nat_a" {
-  allocation_id = aws_eip.nat_a.id
-  subnet_id     = aws_subnet.public_a.id
+resource "aws_nat_gateway" "nat" {
+  count = var.vpc_subnets_count
+
+  allocation_id = aws_eip.nat[count.index].id
+  subnet_id     = aws_subnet.public[count.index].id
 
   tags = {
-    Name = "${var.name_prefix}-nat-a"
+    Name = "${var.name_prefix}-nat-${data.aws_availability_zones.available.names[count.index]}"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -227,32 +188,13 @@ resource "aws_nat_gateway" "nat_a" {
   depends_on = [aws_internet_gateway.this]
 }
 
-resource "aws_nat_gateway" "nat_b" {
-  allocation_id = aws_eip.nat_b.id
-  subnet_id     = aws_subnet.public_b.id
+resource "aws_eip" "nat" {
+  count = var.vpc_subnets_count
 
-  tags = {
-    Name = "${var.name_prefix}-nat-b"
-  }
-
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
-  depends_on = [aws_internet_gateway.this]
-}
-
-resource "aws_eip" "nat_a" {
   domain = "vpc"
 
   tags = {
-    Name = "${var.name_prefix}-nat-1a-elastic-ip"
-  }
-}
-
-resource "aws_eip" "nat_b" {
-  domain = "vpc"
-
-  tags = {
-    Name = "${var.name_prefix}-nat-1b-elastic-ip"
+    Name = "${var.name_prefix}-nat-elastic-ip-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
