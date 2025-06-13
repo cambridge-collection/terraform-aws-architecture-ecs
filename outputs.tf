@@ -34,12 +34,12 @@ output "ecs_capacity_provider_name" {
 }
 
 output "s3_bucket" {
-  value       = aws_s3_bucket.this.id
+  value       = var.s3_bucket_create ? aws_s3_bucket.this.0.id : ""
   description = "Name of the S3 Bucket"
 }
 
 output "s3_bucket_arn" {
-  value       = aws_s3_bucket.this.arn
+  value       = var.s3_bucket_create ? aws_s3_bucket.this.0.arn : ""
   description = "ARN of the S3 Bucket"
 }
 
