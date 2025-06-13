@@ -87,6 +87,12 @@ variable "route53_zone_id_existing" {
   default     = null
 }
 
+variable "s3_bucket_name" {
+  type        = string
+  description = "Optional name of the S3 bucket to override default value"
+  default     = null
+}
+
 variable "s3_bucket_versioning_enabled" {
   type        = bool
   description = "Whether to enable S3 bucket versioning"
