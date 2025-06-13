@@ -13,6 +13,11 @@ output "vpc_private_subnet_ids" {
   description = "Private Subnet IDs"
 }
 
+output "vpc_availability_zones" {
+  value       = slice(data.aws_availability_zones.available.names, 0, var.vpc_subnets_count)
+  description = "List of availability zones enabled in VPC"
+}
+
 output "ecs_cluster_name" {
   value       = aws_ecs_cluster.this.name
   description = "Name of the ECS Cluster"
