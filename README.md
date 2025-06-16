@@ -137,7 +137,9 @@ No modules.
 | <a name="input_route53_zone_domain_name"></a> [route53\_zone\_domain\_name](#input\_route53\_zone\_domain\_name) | Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored | `string` | `null` | no |
 | <a name="input_route53_zone_force_destroy"></a> [route53\_zone\_force\_destroy](#input\_route53\_zone\_force\_destroy) | Whether to destroy the Route 53 Zone although records may still exist | `bool` | `false` | no |
 | <a name="input_route53_zone_id_existing"></a> [route53\_zone\_id\_existing](#input\_route53\_zone\_id\_existing) | ID of an existing Route 53 Hosted zone as an alternative to creating a hosted zone | `string` | `null` | no |
+| <a name="input_s3_bucket_create"></a> [s3\_bucket\_create](#input\_s3\_bucket\_create) | Whether to create an S3 bucket to associate with the deployment | `bool` | `true` | no |
 | <a name="input_s3_bucket_force_destroy"></a> [s3\_bucket\_force\_destroy](#input\_s3\_bucket\_force\_destroy) | Whether to allow a non-empty bucket to be destroyed | `bool` | `false` | no |
+| <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | Optional name of the S3 bucket to override default value | `string` | `null` | no |
 | <a name="input_s3_bucket_versioning_enabled"></a> [s3\_bucket\_versioning\_enabled](#input\_s3\_bucket\_versioning\_enabled) | Whether to enable S3 bucket versioning | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags for adding to resources | `map(string)` | `{}` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
@@ -181,6 +183,7 @@ No modules.
 | <a name="output_route53_public_hosted_zone"></a> [route53\_public\_hosted\_zone](#output\_route53\_public\_hosted\_zone) | Zone ID of the Route 53 Public Hosted Zone |
 | <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | Name of the S3 Bucket |
 | <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | ARN of the S3 Bucket |
+| <a name="output_vpc_availability_zones"></a> [vpc\_availability\_zones](#output\_vpc\_availability\_zones) | List of availability zones enabled in VPC |
 | <a name="output_vpc_egress_security_group_id"></a> [vpc\_egress\_security\_group\_id](#output\_vpc\_egress\_security\_group\_id) | ID of the Security Group for general egress |
 | <a name="output_vpc_endpoint_security_group_id"></a> [vpc\_endpoint\_security\_group\_id](#output\_vpc\_endpoint\_security\_group\_id) | ID of the Security Group for VPC Endpoints |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |

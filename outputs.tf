@@ -13,6 +13,11 @@ output "vpc_private_subnet_ids" {
   description = "Private Subnet IDs"
 }
 
+output "vpc_availability_zones" {
+  value       = slice(data.aws_availability_zones.available.names, 0, var.vpc_subnets_count)
+  description = "List of availability zones enabled in VPC"
+}
+
 output "ecs_cluster_name" {
   value       = aws_ecs_cluster.this.name
   description = "Name of the ECS Cluster"
@@ -29,12 +34,12 @@ output "ecs_capacity_provider_name" {
 }
 
 output "s3_bucket" {
-  value       = aws_s3_bucket.this.id
+  value       = var.s3_bucket_create ? aws_s3_bucket.this.0.id : ""
   description = "Name of the S3 Bucket"
 }
 
 output "s3_bucket_arn" {
-  value       = aws_s3_bucket.this.arn
+  value       = var.s3_bucket_create ? aws_s3_bucket.this.0.arn : ""
   description = "ARN of the S3 Bucket"
 }
 
