@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.0.0...v4.1.0) (2025-06-16)
+
+
+### Features
+
+* **s3:** Allow name of S3 bucket to be overridden ([5ed57b1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/5ed57b1f9cf81095a5f1e0fdfbd2462adac9b10c))
+* **s3:** Make S3 bucket creation optional ([dc0bacf](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/dc0bacf5935119165de77cf0af2c16d0f1f37e14))
+
 ## [4.0.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v3.1.0...v4.0.0) (2025-06-12)
 
 
