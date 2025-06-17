@@ -30,6 +30,13 @@ resource "aws_iam_role_policy_attachment" "ec2_container_service" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
+resource "aws_iam_role_policy_attachment" "instance_additional_policy_attachment" {
+  for_each = toset(var.iam_role_instance_additional_policies)
+
+  role       = aws_iam_role.instance.name
+  policy_arn = each.value
+}
+
 resource "aws_iam_instance_profile" "instance" {
   name = "${var.name_prefix}-instance-profile"
   role = aws_iam_role.instance.name
