@@ -252,6 +252,12 @@ variable "ecs_default_capacity_provider_strategy_weight" {
   default     = 100
 }
 
+variable "iam_role_instance_additional_policies" {
+  type        = list(string)
+  description = "List of IAM policy ARNs to attach to the IAM instance role"
+  default     = []
+}
+
 variable "alb_internal" {
   type        = bool
   description = "Whether the ALB should be internal (not public facing)"
