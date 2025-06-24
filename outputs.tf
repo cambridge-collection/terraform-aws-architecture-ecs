@@ -48,6 +48,11 @@ output "alb_arn" {
   description = "ARN of the Application Load Balancer"
 }
 
+output "alb_arn_suffix" {
+  value       = aws_lb.this.arn_suffix
+  description = "ARN suffix of the Application Load Balancer for use with CloudWatch Metrics"
+}
+
 output "alb_https_listener_arn" {
   value       = aws_lb_listener.https.arn
   description = "ARN of the default Application Load Balancer Listener on port 443"
@@ -101,4 +106,9 @@ output "cloudwatch_log_group_name" {
 output "waf_acl_arn" {
   value       = aws_wafv2_web_acl.this.arn
   description = "ARN of the WAF Web ACL"
+}
+
+output "waf_name" {
+  value       = aws_wafv2_web_acl.this.name
+  description = "Name of the WAF Web ACL"
 }
