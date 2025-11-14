@@ -41,8 +41,10 @@ No modules.
 | [aws_ecs_cluster_capacity_providers.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster_capacity_providers) | resource |
 | [aws_eip.nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_iam_instance_profile.instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role.infrastructure](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.ec2_container_service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.infrastructure](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_managed_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_internet_gateway.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
 | [aws_launch_template.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
@@ -127,11 +129,18 @@ No modules.
 | <a name="input_ec2_ebs_volume_type"></a> [ec2\_ebs\_volume\_type](#input\_ec2\_ebs\_volume\_type) | Volume type used in EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | EC2 Instance type used by EC2 Instances | `string` | `"t3.small"` | no |
 | <a name="input_ec2_keypair"></a> [ec2\_keypair](#input\_ec2\_keypair) | Name of EC2 Keypair for SSH access to EC2 instances | `string` | `null` | no |
+| <a name="input_ecs_capacity_provider_managed_instances"></a> [ecs\_capacity\_provider\_managed\_instances](#input\_ecs\_capacity\_provider\_managed\_instances) | Whether to allow the ECS capacity provider to manage instances | `bool` | `false` | no |
 | <a name="input_ecs_capacity_provider_managed_termination_protection"></a> [ecs\_capacity\_provider\_managed\_termination\_protection](#input\_ecs\_capacity\_provider\_managed\_termination\_protection) | Enables or disables container-aware termination of instances in the ASG when scale-in happens | `string` | `"ENABLED"` | no |
 | <a name="input_ecs_capacity_provider_status"></a> [ecs\_capacity\_provider\_status](#input\_ecs\_capacity\_provider\_status) | Enables or disables managed scaling on ASG | `string` | `"ENABLED"` | no |
 | <a name="input_ecs_capacity_provider_target_capacity_percent"></a> [ecs\_capacity\_provider\_target\_capacity\_percent](#input\_ecs\_capacity\_provider\_target\_capacity\_percent) | Percentage target capacity utilization for the autscaling group instances | `number` | `100` | no |
 | <a name="input_ecs_default_capacity_provider_strategy_base"></a> [ecs\_default\_capacity\_provider\_strategy\_base](#input\_ecs\_default\_capacity\_provider\_strategy\_base) | Designates how many tasks, at a minimum, to run on the default capacity provider | `number` | `1` | no |
 | <a name="input_ecs_default_capacity_provider_strategy_weight"></a> [ecs\_default\_capacity\_provider\_strategy\_weight](#input\_ecs\_default\_capacity\_provider\_strategy\_weight) | Designates the percentage of the total number of tasks that should use the default capacity provider | `number` | `100` | no |
+| <a name="input_ecs_managed_instances_include_burstable"></a> [ecs\_managed\_instances\_include\_burstable](#input\_ecs\_managed\_instances\_include\_burstable) | Whether to include burstable performance types in managed instances | `bool` | `true` | no |
+| <a name="input_ecs_managed_instances_memory_max"></a> [ecs\_managed\_instances\_memory\_max](#input\_ecs\_managed\_instances\_memory\_max) | Maximum amount of memory when using ECS managed instances, in Mebibytes | `number` | `16000` | no |
+| <a name="input_ecs_managed_instances_memory_min"></a> [ecs\_managed\_instances\_memory\_min](#input\_ecs\_managed\_instances\_memory\_min) | Minumum amount of memory when using ECS managed instances, in Mebibytes | `number` | `2000` | no |
+| <a name="input_ecs_managed_instances_storage_size"></a> [ecs\_managed\_instances\_storage\_size](#input\_ecs\_managed\_instances\_storage\_size) | Storage size in Gebibytes for ECS managed instances | `number` | `30` | no |
+| <a name="input_ecs_managed_instances_vcpu_max"></a> [ecs\_managed\_instances\_vcpu\_max](#input\_ecs\_managed\_instances\_vcpu\_max) | Maximum number of vcpus when using ECS managed instances | `number` | `4` | no |
+| <a name="input_ecs_managed_instances_vcpu_min"></a> [ecs\_managed\_instances\_vcpu\_min](#input\_ecs\_managed\_instances\_vcpu\_min) | Minumum number of vcpus when using ECS managed instances | `number` | `2` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Name prefix of the ECS Cluster and associated resources | `string` | n/a | yes |
 | <a name="input_route53_delegation_set_id"></a> [route53\_delegation\_set\_id](#input\_route53\_delegation\_set\_id) | The ID of the reusable delegation set whose NS records should be assigned to the hosted zone | `string` | `null` | no |
 | <a name="input_route53_zone_domain_name"></a> [route53\_zone\_domain\_name](#input\_route53\_zone\_domain\_name) | Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored | `string` | `null` | no |
