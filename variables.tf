@@ -171,6 +171,12 @@ variable "asg_desired_capacity" {
   default     = 1
 }
 
+variable "asg_use_mixed_instances" {
+  type        = bool
+  description = "Whether to create a mixed instances group"
+  default     = false
+}
+
 variable "asg_default_cooldown" {
   type        = number
   description = "Number of seconds between scaling activities"
@@ -220,6 +226,30 @@ variable "asg_enabled_metrics" {
     "GroupTotalCapacity",
     "GroupTerminatingCapacity",
   ]
+}
+
+variable "asg_mixed_instances_memory_min" {
+  type        = number
+  description = "Minumum amount of memory when using a mixed instances group, in Mebibytes"
+  default     = 2000
+}
+
+variable "asg_mixed_instances_memory_max" {
+  type        = number
+  description = "Maximum amount of memory when using a mixed instances group, in Mebibytes"
+  default     = 16000
+}
+
+variable "asg_mixed_instances_vcpu_min" {
+  type        = number
+  description = "Minumum number of vcpus when using a mixed instances group"
+  default     = 2
+}
+
+variable "asg_mixed_instances_vcpu_max" {
+  type        = number
+  description = "Maximum number of vcpus when using a mixed instances group"
+  default     = 4
 }
 
 variable "ecs_capacity_provider_status" {

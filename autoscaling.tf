@@ -1,9 +1,5 @@
 resource "aws_autoscaling_group" "this" {
-  name = "${var.name_prefix}-asg"
-  launch_template {
-    id      = aws_launch_template.this.id
-    version = "$Latest"
-  }
+  name                      = "${var.name_prefix}-asg"
   min_size                  = var.asg_min_size
   max_size                  = var.asg_max_size
   desired_capacity          = var.asg_desired_capacity
@@ -16,6 +12,40 @@ resource "aws_autoscaling_group" "this" {
   metrics_granularity       = var.asg_metrics_granularity
   enabled_metrics           = var.asg_enabled_metrics
   protect_from_scale_in     = var.asg_protect_from_scale_in
+
+  dynamic "launch_template" {
+    for_each = var.asg_use_mixed_instances ? [] : [1]
+    content {
+      id      = aws_launch_template.this.id
+      version = "$Latest"
+    }
+  }
+
+  dynamic "mixed_instances_policy" {
+    for_each = var.asg_use_mixed_instances ? [1] : []
+
+    content {
+      launch_template {
+        launch_template_specification {
+          launch_template_id = aws_launch_template.this.id
+        }
+
+        override {
+          instance_requirements {
+            memory_mib {
+              min = var.asg_mixed_instances_memory_min
+              max = var.asg_mixed_instances_memory_max
+            }
+
+            vcpu_count {
+              min = var.asg_mixed_instances_vcpu_min
+              max = var.asg_mixed_instances_vcpu_max
+            }
+          }
+        }
+      }
+    }
+  }
 
   tag {
     key                 = "AmazonECSManaged"
@@ -48,7 +78,7 @@ resource "aws_autoscaling_group" "this" {
 
 resource "aws_launch_template" "this" {
   name          = "${var.name_prefix}-lt"
-  instance_type = var.ec2_instance_type
+  instance_type = var.asg_use_mixed_instances ? null : var.ec2_instance_type
   image_id      = data.aws_ami.ecs_ami.image_id
   vpc_security_group_ids = var.vpc_endpoints_create ? [
     aws_security_group.asg.id,

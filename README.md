@@ -116,8 +116,13 @@ No modules.
 | <a name="input_asg_max_size"></a> [asg\_max\_size](#input\_asg\_max\_size) | Maximum number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_metrics_granularity"></a> [asg\_metrics\_granularity](#input\_asg\_metrics\_granularity) | Granularity of metrics collected by the Autoscaling Group | `string` | `"1Minute"` | no |
 | <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the Autoscaling Group | `number` | `1` | no |
+| <a name="input_asg_mixed_instances_memory_max"></a> [asg\_mixed\_instances\_memory\_max](#input\_asg\_mixed\_instances\_memory\_max) | Maximum amount of memory when using a mixed instances group, in Mebibytes | `number` | `16000` | no |
+| <a name="input_asg_mixed_instances_memory_min"></a> [asg\_mixed\_instances\_memory\_min](#input\_asg\_mixed\_instances\_memory\_min) | Minumum amount of memory when using a mixed instances group, in Mebibytes | `number` | `2000` | no |
+| <a name="input_asg_mixed_instances_vcpu_max"></a> [asg\_mixed\_instances\_vcpu\_max](#input\_asg\_mixed\_instances\_vcpu\_max) | Maximum number of vcpus when using a mixed instances group | `number` | `4` | no |
+| <a name="input_asg_mixed_instances_vcpu_min"></a> [asg\_mixed\_instances\_vcpu\_min](#input\_asg\_mixed\_instances\_vcpu\_min) | Minumum number of vcpus when using a mixed instances group | `number` | `2` | no |
 | <a name="input_asg_protect_from_scale_in"></a> [asg\_protect\_from\_scale\_in](#input\_asg\_protect\_from\_scale\_in) | Whether newly launched instances are automatically protected from termination | `bool` | `true` | no |
 | <a name="input_asg_termination_policies"></a> [asg\_termination\_policies](#input\_asg\_termination\_policies) | Termination Policies used by the Autoscaling Group | `list(string)` | <pre>[<br>  "OldestLaunchTemplate"<br>]</pre> | no |
+| <a name="input_asg_use_mixed_instances"></a> [asg\_use\_mixed\_instances](#input\_asg\_use\_mixed\_instances) | Whether to create a mixed instances group | `bool` | `false` | no |
 | <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the CloudWatch log group | `string` | n/a | yes |
 | <a name="input_cloudwatch_log_group_exists"></a> [cloudwatch\_log\_group\_exists](#input\_cloudwatch\_log\_group\_exists) | Whether the CloudWatch log group already exists | `bool` | `true` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Retention in days for records in the log group. The default of 0 means records never expire | `number` | `0` | no |
