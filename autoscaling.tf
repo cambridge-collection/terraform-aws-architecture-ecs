@@ -32,6 +32,8 @@ resource "aws_autoscaling_group" "this" {
 
         override {
           instance_requirements {
+            burstable_performance = var.asg_mixed_instances_include_burstable ? "included" : "excluded"
+
             memory_mib {
               min = var.asg_mixed_instances_memory_min
               max = var.asg_mixed_instances_memory_max

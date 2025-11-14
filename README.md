@@ -116,6 +116,7 @@ No modules.
 | <a name="input_asg_max_size"></a> [asg\_max\_size](#input\_asg\_max\_size) | Maximum number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_metrics_granularity"></a> [asg\_metrics\_granularity](#input\_asg\_metrics\_granularity) | Granularity of metrics collected by the Autoscaling Group | `string` | `"1Minute"` | no |
 | <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the Autoscaling Group | `number` | `1` | no |
+| <a name="input_asg_mixed_instances_include_burstable"></a> [asg\_mixed\_instances\_include\_burstable](#input\_asg\_mixed\_instances\_include\_burstable) | Whether to include burstable performance types in mixed instances group | `bool` | `true` | no |
 | <a name="input_asg_mixed_instances_memory_max"></a> [asg\_mixed\_instances\_memory\_max](#input\_asg\_mixed\_instances\_memory\_max) | Maximum amount of memory when using a mixed instances group, in Mebibytes | `number` | `16000` | no |
 | <a name="input_asg_mixed_instances_memory_min"></a> [asg\_mixed\_instances\_memory\_min](#input\_asg\_mixed\_instances\_memory\_min) | Minumum amount of memory when using a mixed instances group, in Mebibytes | `number` | `2000` | no |
 | <a name="input_asg_mixed_instances_vcpu_max"></a> [asg\_mixed\_instances\_vcpu\_max](#input\_asg\_mixed\_instances\_vcpu\_max) | Maximum number of vcpus when using a mixed instances group | `number` | `4` | no |

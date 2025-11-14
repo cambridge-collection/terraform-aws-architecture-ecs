@@ -252,6 +252,12 @@ variable "asg_mixed_instances_vcpu_max" {
   default     = 4
 }
 
+variable "asg_mixed_instances_include_burstable" {
+  type        = bool
+  description = "Whether to include burstable performance types in mixed instances group"
+  default     = true
+}
+
 variable "ecs_capacity_provider_status" {
   type        = string
   description = "Enables or disables managed scaling on ASG"
