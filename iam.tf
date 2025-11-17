@@ -61,9 +61,46 @@ resource "aws_iam_role" "infrastructure" {
   }
 }
 
+# this is needed because the AmazonECSInfrastructureRolePolicyForManagedInstances policy
+# limits the names of instance roles
+
+data "aws_iam_policy_document" "infrastructure_extra" {
+  count = var.ecs_capacity_provider_managed_instances ? 1 : 0
+
+  statement {
+    actions   = ["iam:PassRole"]
+    resources = [aws_iam_role.instance.arn]
+
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "infrastructure_extra" {
+  count = var.ecs_capacity_provider_managed_instances ? 1 : 0
+
+  name        = trimprefix(substr("${var.name_prefix}-infrastructure-extra", -64, -1), "-")
+  path        = "/"
+  description = "Additional permissions for ${aws_iam_role.infrastructure.0.name}"
+  policy      = data.aws_iam_policy_document.infrastructure_extra.0.json
+  tags = {
+    Name = trimprefix(substr("${var.name_prefix}-infrastructure-extra", -64, -1), "-")
+  }
+}
+
 resource "aws_iam_role_policy_attachment" "infrastructure" {
   count = var.ecs_capacity_provider_managed_instances ? 1 : 0
 
   role       = aws_iam_role.infrastructure.0.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForManagedInstances"
+}
+
+resource "aws_iam_role_policy_attachment" "infrastructure_extra" {
+  count = var.ecs_capacity_provider_managed_instances ? 1 : 0
+
+  role       = aws_iam_role.infrastructure.0.name
+  policy_arn = aws_iam_policy.infrastructure_extra.0.arn
 }

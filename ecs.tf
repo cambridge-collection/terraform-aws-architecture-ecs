@@ -25,7 +25,7 @@ resource "aws_ecs_capacity_provider" "this" {
   }
 
   dynamic "managed_instances_provider" {
-    for_each = var.ecs_capacity_provider_managed_instances ? [1] : [0]
+    for_each = var.ecs_capacity_provider_managed_instances ? [1] : []
 
     content {
       infrastructure_role_arn = aws_iam_role.infrastructure.0.arn
