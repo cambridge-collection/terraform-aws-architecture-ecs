@@ -39,6 +39,12 @@ variable "vpc_private_subnet_cidr_blocks" {
   default     = []
 }
 
+variable "vpc_nat_gateway_create" {
+  type        = bool
+  description = "Whether to create a NAT Gateway. Note this can have a cost impact"
+  default     = false
+}
+
 variable "vpc_endpoints_create" {
   type        = bool
   description = "Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact"
