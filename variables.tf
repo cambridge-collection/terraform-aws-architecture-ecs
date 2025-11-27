@@ -258,6 +258,48 @@ variable "ecs_default_capacity_provider_strategy_weight" {
   default     = 100
 }
 
+variable "ecs_capacity_provider_managed_instances" {
+  type        = bool
+  description = "Whether to allow the ECS capacity provider to manage instances"
+  default     = false
+}
+
+variable "ecs_managed_instances_include_burstable" {
+  type        = bool
+  description = "Whether to include burstable performance types in managed instances"
+  default     = true
+}
+
+variable "ecs_managed_instances_memory_min" {
+  type        = number
+  description = "Minumum amount of memory when using ECS managed instances, in Mebibytes"
+  default     = 2000
+}
+
+variable "ecs_managed_instances_memory_max" {
+  type        = number
+  description = "Maximum amount of memory when using ECS managed instances, in Mebibytes"
+  default     = 16000
+}
+
+variable "ecs_managed_instances_vcpu_min" {
+  type        = number
+  description = "Minumum number of vcpus when using ECS managed instances"
+  default     = 2
+}
+
+variable "ecs_managed_instances_vcpu_max" {
+  type        = number
+  description = "Maximum number of vcpus when using ECS managed instances"
+  default     = 4
+}
+
+variable "ecs_managed_instances_storage_size" {
+  type        = number
+  description = "Storage size in Gebibytes for ECS managed instances"
+  default     = 30
+}
+
 variable "alb_internal" {
   type        = bool
   description = "Whether the ALB should be internal (not public facing)"
