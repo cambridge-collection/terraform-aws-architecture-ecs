@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.1.0...v4.2.0) (2025-12-01)
+
+
+### Features
+
+* **ecs:** Add ability for ECS capacity provider to manage instances ([43c18a7](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/43c18a7674a75f2f5d4c1e6ff686caaadefc7305))
+* **iam:** Add extra IAM policy for infrastructure role ([b8ea84d](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/b8ea84d0bf3224a601a62385ebe0fe097de8e481))
+
 ## [4.1.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.0.0...v4.1.0) (2025-06-16)
 
 
