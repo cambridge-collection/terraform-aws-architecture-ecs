@@ -59,7 +59,7 @@ output "alb_dns_name" {
 }
 
 output "asg_name" {
-  value       = aws_autoscaling_group.this.name
+  value       = var.ecs_capacity_provider_managed_instances ? "" : aws_autoscaling_group.this.0.name
   description = "Name of the Auto Scaling Group"
 }
 

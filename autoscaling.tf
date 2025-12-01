@@ -1,7 +1,9 @@
 resource "aws_autoscaling_group" "this" {
+  count = var.ecs_capacity_provider_managed_instances ? 0 : 1
+
   name = "${var.name_prefix}-asg"
   launch_template {
-    id      = aws_launch_template.this.id
+    id      = aws_launch_template.this.0.id
     version = "$Latest"
   }
   min_size                  = var.asg_min_size
@@ -47,6 +49,8 @@ resource "aws_autoscaling_group" "this" {
 }
 
 resource "aws_launch_template" "this" {
+  count = var.ecs_capacity_provider_managed_instances ? 0 : 1
+
   name          = "${var.name_prefix}-lt"
   instance_type = var.ec2_instance_type
   image_id      = data.aws_ami.ecs_ami.image_id
