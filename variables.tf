@@ -63,6 +63,12 @@ variable "vpc_peering_vpc_ids" {
   default     = []
 }
 
+variable "vpc_nat_gateway_single" {
+  type        = bool
+  description = "Whether to create a single NAT Gateway"
+  default     = true
+}
+
 variable "route53_zone_domain_name" {
   type        = string
   description = "Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored"

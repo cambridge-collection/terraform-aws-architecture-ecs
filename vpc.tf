@@ -70,7 +70,7 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat[count.index].id
+    nat_gateway_id = var.vpc_nat_gateway_single ? aws_nat_gateway.nat[0].id : aws_nat_gateway.nat[count.index].id
   }
 
   tags = {
@@ -173,14 +173,18 @@ resource "aws_vpc_endpoint" "interface" {
 # NAT Gateway
 ################################################################################
 
+locals {
+  nat_gateway_count = var.vpc_nat_gateway_single ? 1 : var.vpc_subnets_count
+}
+
 resource "aws_nat_gateway" "nat" {
-  count = var.vpc_subnets_count
+  count = local.nat_gateway_count
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
   tags = {
-    Name = "${var.name_prefix}-nat-${data.aws_availability_zones.available.names[count.index]}"
+    Name = "${var.name_prefix}-nat-${aws_subnet.public[count.index].availability_zone}"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -189,12 +193,12 @@ resource "aws_nat_gateway" "nat" {
 }
 
 resource "aws_eip" "nat" {
-  count = var.vpc_subnets_count
+  count = local.nat_gateway_count
 
   domain = "vpc"
 
   tags = {
-    Name = "${var.name_prefix}-nat-elastic-ip-${data.aws_availability_zones.available.names[count.index]}"
+    Name = "${var.name_prefix}-nat-elastic-ip-${aws_subnet.public[count.index].availability_zone}"
   }
 }
 
