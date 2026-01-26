@@ -389,6 +389,12 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 0
 }
 
+variable "waf_create" {
+  type        = bool
+  description = "Whether to create a Web Application Firewall"
+  default     = true
+}
+
 variable "waf_use_ip_restrictions" {
   type        = bool
   description = "Whether to use IP range restrictions on the default WAF"

@@ -1,5 +1,5 @@
 resource "aws_wafv2_ip_set" "this" {
-  count = var.waf_use_ip_restrictions ? 1 : 0
+  count = var.waf_create && var.waf_use_ip_restrictions ? 1 : 0
 
   name               = "${var.name_prefix}-waf-ip-set"
   provider           = aws.us-east-1
@@ -10,6 +10,8 @@ resource "aws_wafv2_ip_set" "this" {
 }
 
 resource "aws_wafv2_web_acl" "this" {
+  count = var.waf_create ? 1 : 0
+
   name        = "${var.name_prefix}-waf-web-acl"
   provider    = aws.us-east-1
   description = "Managed by Terraform"

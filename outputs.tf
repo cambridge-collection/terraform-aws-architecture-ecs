@@ -99,6 +99,6 @@ output "cloudwatch_log_group_name" {
 }
 
 output "waf_acl_arn" {
-  value       = aws_wafv2_web_acl.this.arn
+  value       = var.waf_create ? aws_wafv2_web_acl.this.0.arn : var.output_undefined
   description = "ARN of the WAF Web ACL"
 }
