@@ -44,17 +44,17 @@ output "s3_bucket_arn" {
 }
 
 output "alb_arn" {
-  value       = aws_lb.this.arn
+  value       = var.alb_create ? aws_lb.this.0.arn : var.output_undefined
   description = "ARN of the Application Load Balancer"
 }
 
 output "alb_https_listener_arn" {
-  value       = aws_lb_listener.https.arn
+  value       = var.alb_create ? aws_lb_listener.https.0.arn : var.output_undefined
   description = "ARN of the default Application Load Balancer Listener on port 443"
 }
 
 output "alb_dns_name" {
-  value       = aws_lb.this.dns_name
+  value       = var.alb_create ? aws_lb.this.0.dns_name : var.output_undefined
   description = "DNS Name of the Application Load Balancer"
 }
 
@@ -64,7 +64,7 @@ output "asg_name" {
 }
 
 output "alb_security_group_id" {
-  value       = aws_security_group.alb.id
+  value       = var.alb_create ? aws_security_group.alb.0.id : var.output_undefined
   description = "ID of the Security Group for the Application Load Balancer"
 }
 

@@ -300,6 +300,12 @@ variable "ecs_managed_instances_storage_size" {
   default     = 30
 }
 
+variable "alb_create" {
+  type        = bool
+  description = "Whether to create a application load balancer (ALB)"
+  default     = true
+}
+
 variable "alb_internal" {
   type        = bool
   description = "Whether the ALB should be internal (not public facing)"

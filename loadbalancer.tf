@@ -1,10 +1,12 @@
 resource "aws_lb" "this" {
+  count = var.alb_create ? 1 : 0
+
   name               = trimsuffix(substr("${var.name_prefix}-alb", 0, 32), "-")
   internal           = var.alb_internal
   load_balancer_type = "application"
   subnets            = var.alb_internal ? aws_subnet.private.*.id : aws_subnet.public.*.id
   security_groups = [
-    aws_security_group.alb.id
+    aws_security_group.alb.0.id
   ]
   ip_address_type                  = "ipv4"
   idle_timeout                     = var.alb_idle_timeout
@@ -24,7 +26,9 @@ resource "aws_lb" "this" {
 
 # NOTE see section "Note about Load Balancer Listener" in README.md
 resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.this.arn
+  count = var.alb_create ? 1 : 0
+
+  load_balancer_arn = aws_lb.this.0.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.alb_listener_ssl_policy

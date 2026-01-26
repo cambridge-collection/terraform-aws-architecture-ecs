@@ -13,6 +13,8 @@ resource "aws_security_group" "asg" {
 }
 
 resource "aws_security_group" "alb" {
+  count = var.alb_create ? 1 : 0
+
   name        = "${var.name_prefix}-alb"
   description = "Application Load Balancer Security Group for ${var.name_prefix} cluster"
   vpc_id      = aws_vpc.this.id
@@ -75,10 +77,12 @@ resource "aws_security_group_rule" "vpc_egress_http" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_cloudfront" {
+  count = var.alb_create ? 1 : 0
+
   type              = "ingress"
   protocol          = "tcp"
   description       = "HTTPS from CloudFront for ${var.name_prefix}"
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.alb.0.id
   from_port         = 443
   to_port           = 443
   prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
