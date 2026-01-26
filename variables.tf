@@ -63,6 +63,12 @@ variable "vpc_peering_vpc_ids" {
   default     = []
 }
 
+variable "route53_zone_create" {
+  type        = bool
+  description = "Whether to create the default Route 53 Hosted Zone"
+  default     = true
+}
+
 variable "route53_zone_domain_name" {
   type        = string
   description = "Name of the Domain Name used by the Route 53 Zone. Trailing dots are ignored"
@@ -471,4 +477,10 @@ variable "acm_certificate_arn" {
   type        = string
   description = "ARN of an existing certificate in Amazon Certificate Manager"
   default     = null
+}
+
+variable "output_undefined" {
+  type        = string
+  description = "Value to output if other values are undefined"
+  default     = "UNDEFINED"
 }

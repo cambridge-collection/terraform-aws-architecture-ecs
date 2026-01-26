@@ -1,6 +1,6 @@
 locals {
-  route53_zone_domain_name = var.route53_zone_id_existing != null ? data.aws_route53_zone.existing.0.name : aws_route53_zone.public.0.name
-  default_domain_name      = lower(trim(substr(join(".", ["default", var.name_prefix, local.route53_zone_domain_name]), -64, -1), ".-"))
+  route53_zone_domain_name = var.acm_create_certificate ? var.route53_zone_id_existing != null ? data.aws_route53_zone.existing.0.name : aws_route53_zone.public.0.name : var.output_undefined
+  default_domain_name      = var.acm_create_certificate ? lower(trim(substr(join(".", ["default", var.name_prefix, local.route53_zone_domain_name]), -64, -1), ".-")) : var.output_undefined
 }
 
 # NOTE see section "Note about Load Balancer Listener" in README.md

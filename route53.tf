@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "public" {
-  count = var.route53_zone_id_existing != null ? 0 : 1
+  count = var.route53_zone_create && var.route53_zone_id_existing == null ? 1 : 0
 
   name              = var.route53_zone_domain_name
   delegation_set_id = var.route53_delegation_set_id
