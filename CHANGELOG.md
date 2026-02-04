@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.2.0...v4.3.0) (2026-02-04)
+
+
+### Features
+
+* **vpc:** Allow use of one NAT gateway ([050009f](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/050009f77e5aea656bd33411acfa1c4f6577cd2e))
+
 ## [4.2.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.1.0...v4.2.0) (2025-12-01)
 
 
