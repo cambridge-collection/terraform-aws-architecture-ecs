@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.3.0...v4.3.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* **waf:** Handle case if waf_bot_control_exclusions list has length 1 ([6de0e80](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/6de0e801d9c28f232ce4297b5ada0a8339aee92f))
+
 ## [4.3.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.2.0...v4.3.0) (2026-02-04)
 
 
