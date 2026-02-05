@@ -140,46 +140,76 @@ resource "aws_wafv2_web_acl" "this" {
             content {
               not_statement {
                 statement {
-                  or_statement {
-
-                    # Handle header-based exclusions
-                    dynamic "statement" {
-                      for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_header != null]
-                      content {
-                        byte_match_statement {
-                          search_string = statement.value.waf_bot_control_exclusion_header_value
-                          field_to_match {
-                            single_header {
-                              name = statement.value.waf_bot_control_exclusion_header
+                  dynamic "byte_match_statement" {
+                    for_each = (length(var.waf_bot_control_exclusions) == 1
+                      && can(coalesce(
+                        var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_header_value,
+                        var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_uri
+                    ))) ? [1] : []
+                    content {
+                      search_string = coalesce(var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_header_value, var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_uri)
+                      dynamic "field_to_match" {
+                        for_each = var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_header != null ? [1] : []
+                        content {
+                          single_header {
+                            name = var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_header
+                          }
+                        }
+                      }
+                      dynamic "field_to_match" {
+                        for_each = var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_uri != null ? [1] : []
+                        content {
+                          uri_path {}
+                        }
+                      }
+                      text_transformation {
+                        priority = 0
+                        type     = var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_text_transform
+                      }
+                      positional_constraint = var.waf_bot_control_exclusions[0].waf_bot_control_exclusion_match_type
+                    }
+                  }
+                  dynamic "or_statement" {
+                    for_each = length(var.waf_bot_control_exclusions) > 1 ? [1] : []
+                    content {
+                      # Handle header-based exclusions
+                      dynamic "statement" {
+                        for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_header != null]
+                        content {
+                          byte_match_statement {
+                            search_string = statement.value.waf_bot_control_exclusion_header_value
+                            field_to_match {
+                              single_header {
+                                name = statement.value.waf_bot_control_exclusion_header
+                              }
                             }
+                            text_transformation {
+                              priority = 0
+                              type     = statement.value.waf_bot_control_exclusion_text_transform
+                            }
+                            positional_constraint = statement.value.waf_bot_control_exclusion_match_type
                           }
-                          text_transformation {
-                            priority = 0
-                            type     = statement.value.waf_bot_control_exclusion_text_transform
+                        }
+                      }
+
+                      # Handle URI-based exclusions
+                      dynamic "statement" {
+                        for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_uri != null]
+                        content {
+                          byte_match_statement {
+                            search_string = statement.value.waf_bot_control_exclusion_uri
+                            field_to_match {
+                              uri_path {}
+                            }
+                            text_transformation {
+                              priority = 0
+                              type     = statement.value.waf_bot_control_exclusion_text_transform
+                            }
+                            positional_constraint = statement.value.waf_bot_control_exclusion_match_type
                           }
-                          positional_constraint = statement.value.waf_bot_control_exclusion_match_type
                         }
                       }
                     }
-
-                    # Handle URI-based exclusions
-                    dynamic "statement" {
-                      for_each = [for exclusion in var.waf_bot_control_exclusions : exclusion if exclusion.waf_bot_control_exclusion_uri != null]
-                      content {
-                        byte_match_statement {
-                          search_string = statement.value.waf_bot_control_exclusion_uri
-                          field_to_match {
-                            uri_path {}
-                          }
-                          text_transformation {
-                            priority = 0
-                            type     = statement.value.waf_bot_control_exclusion_text_transform
-                          }
-                          positional_constraint = statement.value.waf_bot_control_exclusion_match_type
-                        }
-                      }
-                    }
-
                   } # End or_statement
                 }   # End statement
               }     # End not_statement
