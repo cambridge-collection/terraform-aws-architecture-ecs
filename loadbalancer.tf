@@ -44,3 +44,21 @@ resource "aws_lb_listener" "https" {
     Name = "${var.name_prefix}-alb-default-listener"
   }
 }
+
+resource "aws_cloudfront_vpc_origin" "this" {
+  count = var.alb_internal ? 1 : 0
+
+
+  vpc_origin_endpoint_config {
+    name                   = "${var.name_prefix}-vpc-origin"
+    arn                    = aws_lb.this.arn
+    http_port              = 80
+    https_port             = 443
+    origin_protocol_policy = "https-only"
+
+    origin_ssl_protocols {
+      items    = ["TLSv1.2"]
+      quantity = 1
+    }
+  }
+}

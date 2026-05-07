@@ -7,7 +7,8 @@ data "aws_availability_zones" "available" {
 }
 
 data "aws_ec2_managed_prefix_list" "cloudfront" {
-  name = "com.amazonaws.global.cloudfront.origin-facing"
+  count = var.alb_internal ? 0 : 1
+  name  = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
 data "aws_ec2_managed_prefix_list" "s3" {
@@ -43,4 +44,12 @@ data "aws_route53_zone" "existing" {
   count = var.route53_zone_id_existing != null ? 1 : 0
 
   zone_id = var.route53_zone_id_existing
+}
+
+data "aws_security_group" "cloudfront_vpc_origin" {
+  count  = var.alb_internal ? 1 : 0
+  name   = "CloudFront-VPCOrigins-Service-SG"
+  vpc_id = aws_vpc.this.id
+
+  depends_on = [aws_cloudfront_vpc_origin.this]
 }

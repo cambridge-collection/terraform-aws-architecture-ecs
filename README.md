@@ -10,7 +10,7 @@ In order to provide a running ECS Service, a child module will need to build it'
 
 A child module will also need to create its own Load Balancer Listener and Load Balancer Target Group. The child module will need an `aws_autoscaling_attachment` resource to connect the target group to the Autoscaling Group created by this module. The attachment allows the Autoscaling Group to automatically register EC2 Instances with the target group.
 
-To allow connectivity from the Internet, this module has been designed to operate through AWS CloudFront. This has not been implemented in this module as several CloudFront distributions may exist for the same ECS base architecture. The output `alb_dns_name` from this module can be used in the `domain_name` and `origin_id` arguments of a custom `origin` block in a `aws_cloudfront_distribution` resource in Terraform: this will direct requests from the CloudFront distribution to the public Application Load Balancer created by this module. This module also outputs a value `waf_acl_arn` that may be passed into the `web_acl_id` argument of a `aws_cloudfront_distribution` resource to protect the CloudFront distribution.
+To allow connectivity from the Internet, this module has been designed to operate through AWS CloudFront. This has not been implemented in this module as several CloudFront distributions may exist for the same ECS base architecture. This module creates a CloudFront VPC Origin (`aws_cloudfront_vpc_origin`) that connects CloudFront directly to the internal Application Load Balancer without exposing the ALB publicly. The output `cloudfront_vpc_origin_id` can be used in the `vpc_origin_id` argument of an `origin` block in a `aws_cloudfront_distribution` resource in a child module. This module also outputs a value `waf_acl_arn` that may be passed into the `web_acl_id` argument of a `aws_cloudfront_distribution` resource to protect the CloudFront distribution.
 
 ## Requirements
 
@@ -67,7 +67,8 @@ No modules.
 | [aws_security_group.asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.vpc_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group_rule.alb_ingress_cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_cloudfront_vpc_origin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_vpc_origin) | resource |
+| [aws_security_group_rule.alb_ingress_vpc_origin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_egress_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_egress_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_endpoint_egress_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -87,7 +88,6 @@ No modules.
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudwatch_log_group.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
-| [aws_ec2_managed_prefix_list.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_ec2_managed_prefix_list.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.assume_role_policy_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -107,7 +107,6 @@ No modules.
 | <a name="input_alb_access_logs_prefix"></a> [alb\_access\_logs\_prefix](#input\_alb\_access\_logs\_prefix) | Prefix for objects in S3 bucket for ALB access logs | `string` | `""` | no |
 | <a name="input_alb_enable_deletion_protection"></a> [alb\_enable\_deletion\_protection](#input\_alb\_enable\_deletion\_protection) | Whether to enable deletion protection for the ALB | `bool` | `true` | no |
 | <a name="input_alb_idle_timeout"></a> [alb\_idle\_timeout](#input\_alb\_idle\_timeout) | Idle timeout for load balancer | `string` | `"60"` | no |
-| <a name="input_alb_internal"></a> [alb\_internal](#input\_alb\_internal) | Whether the ALB should be internal (not public facing) | `bool` | `false` | no |
 | <a name="input_alb_listener_fixed_response_content_type"></a> [alb\_listener\_fixed\_response\_content\_type](#input\_alb\_listener\_fixed\_response\_content\_type) | Default content type for the fixed response of the default ALB Listener | `string` | `"text/html"` | no |
 | <a name="input_alb_listener_fixed_response_message_body"></a> [alb\_listener\_fixed\_response\_message\_body](#input\_alb\_listener\_fixed\_response\_message\_body) | Default message body for the fixed response of the default ALB Listener | `string` | `"<!DOCTYPE html><body><h1>Hello World!</h1></body>"` | no |
 | <a name="input_alb_listener_fixed_response_status_code"></a> [alb\_listener\_fixed\_response\_status\_code](#input\_alb\_listener\_fixed\_response\_status\_code) | Default status code for the fixed response of the default ALB Listener | `string` | `"200"` | no |
@@ -188,6 +187,8 @@ No modules.
 | <a name="output_alb_https_listener_arn"></a> [alb\_https\_listener\_arn](#output\_alb\_https\_listener\_arn) | ARN of the default Application Load Balancer Listener on port 443 |
 | <a name="output_alb_security_group_id"></a> [alb\_security\_group\_id](#output\_alb\_security\_group\_id) | ID of the Security Group for the Application Load Balancer |
 | <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | Name of the Auto Scaling Group |
+| <a name="output_cloudfront_vpc_origin_arn"></a> [cloudfront\_vpc\_origin\_arn](#output\_cloudfront\_vpc\_origin\_arn) | ARN of the CloudFront VPC Origin |
+| <a name="output_cloudfront_vpc_origin_id"></a> [cloudfront\_vpc\_origin\_id](#output\_cloudfront\_vpc\_origin\_id) | ID of the CloudFront VPC Origin |
 | <a name="output_asg_security_group_id"></a> [asg\_security\_group\_id](#output\_asg\_security\_group\_id) | ID of the Security Group for the Auto Scaling Group |
 | <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group |
 | <a name="output_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#output\_cloudwatch\_log\_group\_name) | Name of the CloudWatch Log Group |

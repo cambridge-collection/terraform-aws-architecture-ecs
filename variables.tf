@@ -302,7 +302,7 @@ variable "ecs_managed_instances_storage_size" {
 
 variable "alb_internal" {
   type        = bool
-  description = "Whether the ALB should be internal (not public facing)"
+  description = "Whether the ALB should be internal (not public facing). When true, a CloudFront VPC Origin is created to allow CloudFront to connect to the internal ALB."
   default     = false
 }
 

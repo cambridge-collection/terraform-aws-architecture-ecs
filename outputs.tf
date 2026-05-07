@@ -68,6 +68,16 @@ output "alb_security_group_id" {
   description = "ID of the Security Group for the Application Load Balancer"
 }
 
+output "cloudfront_vpc_origin_id" {
+  value       = var.alb_internal ? aws_cloudfront_vpc_origin.this[0].id : ""
+  description = "ID of the CloudFront VPC Origin (only set when alb_internal = true)"
+}
+
+output "cloudfront_vpc_origin_arn" {
+  value       = var.alb_internal ? aws_cloudfront_vpc_origin.this[0].arn : ""
+  description = "ARN of the CloudFront VPC Origin (only set when alb_internal = true)"
+}
+
 output "asg_security_group_id" {
   value       = aws_security_group.asg.id
   description = "ID of the Security Group for the Auto Scaling Group"
