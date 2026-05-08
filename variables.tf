@@ -45,6 +45,12 @@ variable "vpc_endpoints_create" {
   default     = false
 }
 
+variable "vpc_s3_gateway_endpoint_create" {
+  type        = bool
+  description = "Whether to create a free S3 Gateway VPC Endpoint. Routes S3 traffic within the AWS network, avoiding NAT Gateway data processing charges"
+  default     = false
+}
+
 variable "vpc_endpoint_dns_record_ip_type" {
   type        = string
   description = "The DNS records created for the endpoint"
@@ -65,7 +71,7 @@ variable "vpc_peering_vpc_ids" {
 
 variable "vpc_nat_gateway_single" {
   type        = bool
-  description = "Whether to create a single NAT Gateway"
+  description = "Whether to create a single NAT Gateway shared across all private subnets, rather than one per subnet"
   default     = true
 }
 
@@ -302,8 +308,20 @@ variable "ecs_managed_instances_storage_size" {
 
 variable "alb_internal" {
   type        = bool
-  description = "Whether the ALB should be internal (not public facing). When true, a CloudFront VPC Origin is created to allow CloudFront to connect to the internal ALB."
+  description = "Whether the ALB should be internal (not public facing). When true, the ALB is placed in private subnets."
   default     = false
+}
+
+variable "cloudfront_create_vpc_origin" {
+  type        = bool
+  description = "Whether to create a CloudFront VPC Origin to allow CloudFront to connect to an internal ALB. Requires alb_internal = true. Pass the cloudfront_vpc_origin_id output to the workload module's cloudfront_vpc_origin_id variable."
+  default     = false
+}
+
+variable "cloudfront_vpc_origin_ssl_protocols" {
+  type        = list(string)
+  description = "SSL/TLS protocols for the CloudFront VPC Origin endpoint."
+  default     = ["TLSv1.2"]
 }
 
 variable "alb_access_logs_enabled" {

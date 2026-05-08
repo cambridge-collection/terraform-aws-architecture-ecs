@@ -7,7 +7,7 @@ data "aws_availability_zones" "available" {
 }
 
 data "aws_ec2_managed_prefix_list" "cloudfront" {
-  count = var.alb_internal ? 0 : 1
+  count = var.cloudfront_create_vpc_origin ? 0 : 1
   name  = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
@@ -47,7 +47,7 @@ data "aws_route53_zone" "existing" {
 }
 
 data "aws_security_group" "cloudfront_vpc_origin" {
-  count  = var.alb_internal ? 1 : 0
+  count  = var.cloudfront_create_vpc_origin ? 1 : 0
   name   = "CloudFront-VPCOrigins-Service-SG"
   vpc_id = aws_vpc.this.id
 

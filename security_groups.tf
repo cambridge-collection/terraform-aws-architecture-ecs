@@ -75,7 +75,7 @@ resource "aws_security_group_rule" "vpc_egress_http" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_cloudfront" {
-  count = var.alb_internal ? 0 : 1
+  count = var.cloudfront_create_vpc_origin ? 0 : 1
 
   type              = "ingress"
   protocol          = "tcp"
@@ -87,7 +87,7 @@ resource "aws_security_group_rule" "alb_ingress_cloudfront" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_vpc_origin" {
-  count = var.alb_internal ? 1 : 0
+  count = var.cloudfront_create_vpc_origin ? 1 : 0
 
   type                     = "ingress"
   protocol                 = "tcp"

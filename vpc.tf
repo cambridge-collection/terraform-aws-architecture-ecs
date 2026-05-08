@@ -137,7 +137,7 @@ resource "aws_route" "cudl_vpc_ec2_route_igw" {
 ################################################################################
 
 resource "aws_vpc_endpoint" "s3" {
-  count = var.vpc_endpoints_create ? 1 : 0
+  count = var.vpc_endpoints_create || var.vpc_s3_gateway_endpoint_create ? 1 : 0
 
   vpc_endpoint_type   = "Gateway"
   vpc_id              = aws_vpc.this.id

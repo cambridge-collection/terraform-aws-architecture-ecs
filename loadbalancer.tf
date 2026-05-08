@@ -46,8 +46,14 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_cloudfront_vpc_origin" "this" {
-  count = var.alb_internal ? 1 : 0
+  count = var.cloudfront_create_vpc_origin ? 1 : 0
 
+  lifecycle {
+    precondition {
+      condition     = var.alb_internal
+      error_message = "cloudfront_create_vpc_origin requires alb_internal = true."
+    }
+  }
 
   vpc_origin_endpoint_config {
     name                   = "${var.name_prefix}-vpc-origin"
@@ -57,8 +63,8 @@ resource "aws_cloudfront_vpc_origin" "this" {
     origin_protocol_policy = "https-only"
 
     origin_ssl_protocols {
-      items    = ["TLSv1.2"]
-      quantity = 1
+      items    = var.cloudfront_vpc_origin_ssl_protocols
+      quantity = length(var.cloudfront_vpc_origin_ssl_protocols)
     }
   }
 }
