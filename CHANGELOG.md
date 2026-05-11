@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.3.1...v4.4.0) (2026-05-11)
+
+
+### Features
+
+* **alb:** add CloudFront VPC Origin support for internal ALBs ([c43bdd9](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/c43bdd932ff1f27a4f7799b050a11f07d041c40f))
+* **vpc:** add optional S3 Gateway VPC Endpoint ([0fa5478](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/0fa5478955ab365985bf846737cb6546d97c7422))
+
 ## [4.3.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.3.0...v4.3.1) (2026-02-05)
 
 
