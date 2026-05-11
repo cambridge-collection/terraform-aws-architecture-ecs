@@ -44,3 +44,27 @@ resource "aws_lb_listener" "https" {
     Name = "${var.name_prefix}-alb-default-listener"
   }
 }
+
+resource "aws_cloudfront_vpc_origin" "this" {
+  count = var.cloudfront_create_vpc_origin ? 1 : 0
+
+  lifecycle {
+    precondition {
+      condition     = var.alb_internal
+      error_message = "cloudfront_create_vpc_origin requires alb_internal = true."
+    }
+  }
+
+  vpc_origin_endpoint_config {
+    name                   = "${var.name_prefix}-vpc-origin"
+    arn                    = aws_lb.this.arn
+    http_port              = 80
+    https_port             = 443
+    origin_protocol_policy = "https-only"
+
+    origin_ssl_protocols {
+      items    = var.cloudfront_vpc_origin_ssl_protocols
+      quantity = length(var.cloudfront_vpc_origin_ssl_protocols)
+    }
+  }
+}

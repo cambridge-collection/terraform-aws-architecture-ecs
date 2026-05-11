@@ -75,13 +75,27 @@ resource "aws_security_group_rule" "vpc_egress_http" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_cloudfront" {
+  count = var.cloudfront_create_vpc_origin ? 0 : 1
+
   type              = "ingress"
   protocol          = "tcp"
   description       = "HTTPS from CloudFront for ${var.name_prefix}"
   security_group_id = aws_security_group.alb.id
   from_port         = 443
   to_port           = 443
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront[0].id]
+}
+
+resource "aws_security_group_rule" "alb_ingress_vpc_origin" {
+  count = var.cloudfront_create_vpc_origin ? 1 : 0
+
+  type                     = "ingress"
+  protocol                 = "tcp"
+  description              = "HTTPS from CloudFront VPC Origin for ${var.name_prefix}"
+  security_group_id        = aws_security_group.alb.id
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = data.aws_security_group.cloudfront_vpc_origin[0].id
 }
 
 resource "aws_security_group_rule" "vpc_endpoint_ingress_self" {

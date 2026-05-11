@@ -63,9 +63,20 @@ output "asg_name" {
   description = "Name of the Auto Scaling Group"
 }
 
+
 output "alb_security_group_id" {
   value       = aws_security_group.alb.id
   description = "ID of the Security Group for the Application Load Balancer"
+}
+
+output "cloudfront_vpc_origin_id" {
+  value       = var.cloudfront_create_vpc_origin ? aws_cloudfront_vpc_origin.this[0].id : ""
+  description = "ID of the CloudFront VPC Origin (only set when cloudfront_create_vpc_origin = true)"
+}
+
+output "cloudfront_vpc_origin_arn" {
+  value       = var.cloudfront_create_vpc_origin ? aws_cloudfront_vpc_origin.this[0].arn : ""
+  description = "ARN of the CloudFront VPC Origin (only set when cloudfront_create_vpc_origin = true)"
 }
 
 output "asg_security_group_id" {
