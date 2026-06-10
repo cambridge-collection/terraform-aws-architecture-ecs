@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.4.0...v4.4.1) (2026-06-10)
+
 ## [4.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.3.1...v4.4.0) (2026-05-11)
 
 
