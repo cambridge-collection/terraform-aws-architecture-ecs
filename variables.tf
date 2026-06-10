@@ -126,7 +126,7 @@ variable "s3_bucket_force_destroy" {
 variable "ami_name_prefix" {
   type        = string
   description = "Prefix used to find an AMI for use in the Launch Template"
-  default     = "amzn2-ami-ecs-hvm-2.0*"
+  default     = "al2023-ami-ecs-hvm-*"
 }
 
 variable "ami_architecture" {

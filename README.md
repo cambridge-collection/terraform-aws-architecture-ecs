@@ -34,6 +34,7 @@ No modules.
 | [aws_acm_certificate.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_cloudfront_vpc_origin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_vpc_origin) | resource |
 | [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_default_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_ecs_capacity_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider) | resource |
@@ -67,7 +68,7 @@ No modules.
 | [aws_security_group.asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.vpc_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.vpc_endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_cloudfront_vpc_origin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_vpc_origin) | resource |
+| [aws_security_group_rule.alb_ingress_cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.alb_ingress_vpc_origin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_egress_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.vpc_egress_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -88,6 +89,7 @@ No modules.
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudwatch_log_group.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
+| [aws_ec2_managed_prefix_list.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_ec2_managed_prefix_list.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.assume_role_policy_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -95,6 +97,7 @@ No modules.
 | [aws_kms_alias.ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_alias) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_security_group.cloudfront_vpc_origin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group) | data source |
 
 ## Inputs
 
@@ -107,12 +110,13 @@ No modules.
 | <a name="input_alb_access_logs_prefix"></a> [alb\_access\_logs\_prefix](#input\_alb\_access\_logs\_prefix) | Prefix for objects in S3 bucket for ALB access logs | `string` | `""` | no |
 | <a name="input_alb_enable_deletion_protection"></a> [alb\_enable\_deletion\_protection](#input\_alb\_enable\_deletion\_protection) | Whether to enable deletion protection for the ALB | `bool` | `true` | no |
 | <a name="input_alb_idle_timeout"></a> [alb\_idle\_timeout](#input\_alb\_idle\_timeout) | Idle timeout for load balancer | `string` | `"60"` | no |
+| <a name="input_alb_internal"></a> [alb\_internal](#input\_alb\_internal) | Whether the ALB should be internal (not public facing). When true, the ALB is placed in private subnets. | `bool` | `false` | no |
 | <a name="input_alb_listener_fixed_response_content_type"></a> [alb\_listener\_fixed\_response\_content\_type](#input\_alb\_listener\_fixed\_response\_content\_type) | Default content type for the fixed response of the default ALB Listener | `string` | `"text/html"` | no |
 | <a name="input_alb_listener_fixed_response_message_body"></a> [alb\_listener\_fixed\_response\_message\_body](#input\_alb\_listener\_fixed\_response\_message\_body) | Default message body for the fixed response of the default ALB Listener | `string` | `"<!DOCTYPE html><body><h1>Hello World!</h1></body>"` | no |
 | <a name="input_alb_listener_fixed_response_status_code"></a> [alb\_listener\_fixed\_response\_status\_code](#input\_alb\_listener\_fixed\_response\_status\_code) | Default status code for the fixed response of the default ALB Listener | `string` | `"200"` | no |
 | <a name="input_alb_listener_ssl_policy"></a> [alb\_listener\_ssl\_policy](#input\_alb\_listener\_ssl\_policy) | TLS security policy used by the default ALB Listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | Name of the OS Architecture. Note must be compatible with the selected EC2 Instance Type | `string` | `"x86_64"` | no |
-| <a name="input_ami_name_prefix"></a> [ami\_name\_prefix](#input\_ami\_name\_prefix) | Prefix used to find an AMI for use in the Launch Template | `string` | `"amzn2-ami-ecs-hvm-2.0*"` | no |
+| <a name="input_ami_name_prefix"></a> [ami\_name\_prefix](#input\_ami\_name\_prefix) | Prefix used to find an AMI for use in the Launch Template | `string` | `"al2023-ami-ecs-hvm-*"` | no |
 | <a name="input_asg_default_cooldown"></a> [asg\_default\_cooldown](#input\_asg\_default\_cooldown) | Number of seconds between scaling activities | `number` | `300` | no |
 | <a name="input_asg_desired_capacity"></a> [asg\_desired\_capacity](#input\_asg\_desired\_capacity) | Desired number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_enabled_metrics"></a> [asg\_enabled\_metrics](#input\_asg\_enabled\_metrics) | List of metrics enabled for the Auotscaling Group | `list(string)` | <pre>[<br>  "GroupTotalInstances",<br>  "GroupInServiceInstances",<br>  "GroupTerminatingInstances",<br>  "GroupPendingInstances",<br>  "GroupInServiceCapacity",<br>  "GroupPendingCapacity",<br>  "GroupTotalCapacity",<br>  "GroupTerminatingCapacity"<br>]</pre> | no |
@@ -123,6 +127,8 @@ No modules.
 | <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the Autoscaling Group | `number` | `1` | no |
 | <a name="input_asg_protect_from_scale_in"></a> [asg\_protect\_from\_scale\_in](#input\_asg\_protect\_from\_scale\_in) | Whether newly launched instances are automatically protected from termination | `bool` | `true` | no |
 | <a name="input_asg_termination_policies"></a> [asg\_termination\_policies](#input\_asg\_termination\_policies) | Termination Policies used by the Autoscaling Group | `list(string)` | <pre>[<br>  "OldestLaunchTemplate"<br>]</pre> | no |
+| <a name="input_cloudfront_create_vpc_origin"></a> [cloudfront\_create\_vpc\_origin](#input\_cloudfront\_create\_vpc\_origin) | Whether to create a CloudFront VPC Origin to allow CloudFront to connect to an internal ALB. Requires alb\_internal = true. Pass the cloudfront\_vpc\_origin\_id output to the workload module's cloudfront\_vpc\_origin\_id variable. | `bool` | `false` | no |
+| <a name="input_cloudfront_vpc_origin_ssl_protocols"></a> [cloudfront\_vpc\_origin\_ssl\_protocols](#input\_cloudfront\_vpc\_origin\_ssl\_protocols) | SSL/TLS protocols for the CloudFront VPC Origin endpoint. | `list(string)` | <pre>[<br>  "TLSv1.2"<br>]</pre> | no |
 | <a name="input_cloudwatch_log_group"></a> [cloudwatch\_log\_group](#input\_cloudwatch\_log\_group) | Name of the CloudWatch log group | `string` | n/a | yes |
 | <a name="input_cloudwatch_log_group_exists"></a> [cloudwatch\_log\_group\_exists](#input\_cloudwatch\_log\_group\_exists) | Whether the CloudWatch log group already exists | `bool` | `true` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Retention in days for records in the log group. The default of 0 means records never expire | `number` | `0` | no |
@@ -158,11 +164,12 @@ No modules.
 | <a name="input_vpc_endpoint_dns_record_ip_type"></a> [vpc\_endpoint\_dns\_record\_ip\_type](#input\_vpc\_endpoint\_dns\_record\_ip\_type) | The DNS records created for the endpoint | `string` | `"ipv4"` | no |
 | <a name="input_vpc_endpoint_services"></a> [vpc\_endpoint\_services](#input\_vpc\_endpoint\_services) | List of services to create VPC Endpoints for | `list(string)` | <pre>[<br>  "ssmmessages",<br>  "ssm",<br>  "ec2messages",<br>  "ecr.api",<br>  "ecr.dkr",<br>  "ecs",<br>  "ecs-agent",<br>  "ecs-telemetry",<br>  "logs"<br>]</pre> | no |
 | <a name="input_vpc_endpoints_create"></a> [vpc\_endpoints\_create](#input\_vpc\_endpoints\_create) | Whether to use VPC Endpoints to access AWS services inside the VPC. Note this can have a cost impact | `bool` | `false` | no |
-| <a name="input_vpc_nat_gateway_single"></a> [vpc\_nat\_gateway\_single](#input\_vpc\_nat\_gateway\_single) | Whether to create a single NAT Gateway | `bool` | `true` | no |
+| <a name="input_vpc_nat_gateway_single"></a> [vpc\_nat\_gateway\_single](#input\_vpc\_nat\_gateway\_single) | Whether to create a single NAT Gateway shared across all private subnets, rather than one per subnet | `bool` | `true` | no |
 | <a name="input_vpc_peering_vpc_ids"></a> [vpc\_peering\_vpc\_ids](#input\_vpc\_peering\_vpc\_ids) | List of VPC IDS for peering with the VPC | `list(string)` | `[]` | no |
 | <a name="input_vpc_private_subnet_cidr_blocks"></a> [vpc\_private\_subnet\_cidr\_blocks](#input\_vpc\_private\_subnet\_cidr\_blocks) | Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_cidr_blocks"></a> [vpc\_public\_subnet\_cidr\_blocks](#input\_vpc\_public\_subnet\_cidr\_blocks) | Allows for the migration of existing subnets by providing a way to override default subnet CIDR blocks | `list(string)` | `[]` | no |
 | <a name="input_vpc_public_subnet_public_ip"></a> [vpc\_public\_subnet\_public\_ip](#input\_vpc\_public\_subnet\_public\_ip) | Whether to automatically assign public IP addresses in the public subnets | `bool` | `false` | no |
+| <a name="input_vpc_s3_gateway_endpoint_create"></a> [vpc\_s3\_gateway\_endpoint\_create](#input\_vpc\_s3\_gateway\_endpoint\_create) | Whether to create a free S3 Gateway VPC Endpoint. Routes S3 traffic within the AWS network, avoiding NAT Gateway data processing charges | `bool` | `false` | no |
 | <a name="input_vpc_subnets_count"></a> [vpc\_subnets\_count](#input\_vpc\_subnets\_count) | The number of subnets to build in the VPC | `number` | `2` | no |
 | <a name="input_waf_bot_control_enable_machine_learning"></a> [waf\_bot\_control\_enable\_machine\_learning](#input\_waf\_bot\_control\_enable\_machine\_learning) | Determines whether to use machine learning to analyze your web traffic for bot-related activity | `bool` | `false` | no |
 | <a name="input_waf_bot_control_exclusions"></a> [waf\_bot\_control\_exclusions](#input\_waf\_bot\_control\_exclusions) | A list of objects containing information about the WAF exclusions. Can either by a header exclusion (and have 'waf\_bot\_control\_exclusion\_header' and 'waf\_bot\_control\_exclusion\_header\_value' set) OR a URI (and have 'waf\_bot\_control\_exclusion\_uri' set). | <pre>list(object({<br>    waf_bot_control_exclusion_header         = optional(string)<br>    waf_bot_control_exclusion_header_value   = optional(string)<br>    waf_bot_control_exclusion_match_type     = optional(string, "CONTAINS")<br>    waf_bot_control_exclusion_text_transform = optional(string, "NONE")<br>    waf_bot_control_exclusion_uri            = optional(string)<br>  }))</pre> | `[]` | no |
@@ -187,9 +194,9 @@ No modules.
 | <a name="output_alb_https_listener_arn"></a> [alb\_https\_listener\_arn](#output\_alb\_https\_listener\_arn) | ARN of the default Application Load Balancer Listener on port 443 |
 | <a name="output_alb_security_group_id"></a> [alb\_security\_group\_id](#output\_alb\_security\_group\_id) | ID of the Security Group for the Application Load Balancer |
 | <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | Name of the Auto Scaling Group |
-| <a name="output_cloudfront_vpc_origin_arn"></a> [cloudfront\_vpc\_origin\_arn](#output\_cloudfront\_vpc\_origin\_arn) | ARN of the CloudFront VPC Origin |
-| <a name="output_cloudfront_vpc_origin_id"></a> [cloudfront\_vpc\_origin\_id](#output\_cloudfront\_vpc\_origin\_id) | ID of the CloudFront VPC Origin |
 | <a name="output_asg_security_group_id"></a> [asg\_security\_group\_id](#output\_asg\_security\_group\_id) | ID of the Security Group for the Auto Scaling Group |
+| <a name="output_cloudfront_vpc_origin_arn"></a> [cloudfront\_vpc\_origin\_arn](#output\_cloudfront\_vpc\_origin\_arn) | ARN of the CloudFront VPC Origin (only set when cloudfront\_create\_vpc\_origin = true) |
+| <a name="output_cloudfront_vpc_origin_id"></a> [cloudfront\_vpc\_origin\_id](#output\_cloudfront\_vpc\_origin\_id) | ID of the CloudFront VPC Origin (only set when cloudfront\_create\_vpc\_origin = true) |
 | <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch Log Group |
 | <a name="output_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#output\_cloudwatch\_log\_group\_name) | Name of the CloudWatch Log Group |
 | <a name="output_ecs_capacity_provider_name"></a> [ecs\_capacity\_provider\_name](#output\_ecs\_capacity\_provider\_name) | Name of the ECS Capacity Provider associated with the Autoscaling Group |
