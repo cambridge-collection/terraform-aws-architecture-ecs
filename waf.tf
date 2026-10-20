@@ -61,14 +61,14 @@ resource "aws_wafv2_web_acl" "this" {
         rule_action_override {
           name = "SizeRestrictions_QUERYSTRING"
           action_to_use {
-            allow {}
+            count {}
           }
         }
 
         rule_action_override {
           name = "SizeRestrictions_BODY"
           action_to_use {
-            allow {}
+            count {}
           }
         }
       }
