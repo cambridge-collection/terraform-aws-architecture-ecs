@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.4.1...v4.5.0) (2026-10-20)
+
+
+### Features
+
+* **waf:** Add an IPv6 safelist and an option to evaluate the safelist first ([3839c06](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/3839c0667f60b54b2a4473dd543f9bb63cd7f880))
+
+
+### Bug Fixes
+
+* **waf:** Count oversized requests instead of allowing them ([e8cb104](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/commit/e8cb104bf1cd018ce32795861f6fc2e65e6a71fe))
+
 ## [4.4.1](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.4.0...v4.4.1) (2026-06-10)
 
 ## [4.4.0](https://github.com/cambridge-collection/terraform-aws-architecture-ecs/compare/v4.3.1...v4.4.0) (2026-05-11)
