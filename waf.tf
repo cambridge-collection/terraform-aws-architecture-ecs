@@ -1,3 +1,10 @@
+locals {
+  # The safelist rule is either first (priority 0, everything else after it)
+  # or last (priority 5)
+  waf_priority_offset = var.waf_use_ip_restrictions && var.waf_ip_set_allow_first ? 1 : 0
+  waf_ip_set_arns     = concat(aws_wafv2_ip_set.this[*].arn, aws_wafv2_ip_set.ipv6[*].arn)
+}
+
 resource "aws_wafv2_ip_set" "this" {
   count = var.waf_use_ip_restrictions ? 1 : 0
 
@@ -7,6 +14,17 @@ resource "aws_wafv2_ip_set" "this" {
   scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
   addresses          = var.waf_ip_set_addresses
+}
+
+resource "aws_wafv2_ip_set" "ipv6" {
+  count = var.waf_use_ip_restrictions && length(var.waf_ip_set_addresses_ipv6) > 0 ? 1 : 0
+
+  name               = "${var.name_prefix}-waf-ip-set-ipv6"
+  provider           = aws.us-east-1
+  description        = "Managed by Terraform"
+  scope              = "CLOUDFRONT"
+  ip_address_version = "IPV6"
+  addresses          = var.waf_ip_set_addresses_ipv6
 }
 
 resource "aws_wafv2_web_acl" "this" {
@@ -29,7 +47,7 @@ resource "aws_wafv2_web_acl" "this" {
 
   rule {
     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
-    priority = 0
+    priority = 0 + local.waf_priority_offset
 
     statement {
       managed_rule_group_statement {
@@ -51,7 +69,7 @@ resource "aws_wafv2_web_acl" "this" {
 
   rule {
     name     = "AWS-AWSManagedRulesCommonRuleSet"
-    priority = 1
+    priority = 1 + local.waf_priority_offset
 
     statement {
       managed_rule_group_statement {
@@ -87,7 +105,7 @@ resource "aws_wafv2_web_acl" "this" {
 
   rule {
     name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
-    priority = 2
+    priority = 2 + local.waf_priority_offset
 
     statement {
       managed_rule_group_statement {
@@ -111,7 +129,7 @@ resource "aws_wafv2_web_acl" "this" {
     for_each = var.waf_use_bot_control ? [1] : []
     content {
       name     = join("-", [var.name_prefix, "waf-web-bot-control"])
-      priority = 3
+      priority = 3 + local.waf_priority_offset
 
       statement {
         managed_rule_group_statement {
@@ -234,7 +252,7 @@ resource "aws_wafv2_web_acl" "this" {
     for_each = var.waf_use_rate_limiting ? [1] : []
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-rate-limiting"
-      priority = 4
+      priority = 4 + local.waf_priority_offset
 
       action {
         block {}
@@ -269,15 +287,32 @@ resource "aws_wafv2_web_acl" "this" {
 
     content {
       name     = "${var.name_prefix}-waf-web-acl-rule-ip-set"
-      priority = 5
+      priority = var.waf_ip_set_allow_first ? 0 : 5
 
       action {
         allow {}
       }
 
       statement {
-        ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.this.0.arn
+        dynamic "ip_set_reference_statement" {
+          for_each = length(local.waf_ip_set_arns) == 1 ? local.waf_ip_set_arns : []
+          content {
+            arn = ip_set_reference_statement.value
+          }
+        }
+
+        dynamic "or_statement" {
+          for_each = length(local.waf_ip_set_arns) > 1 ? [1] : []
+          content {
+            dynamic "statement" {
+              for_each = local.waf_ip_set_arns
+              content {
+                ip_set_reference_statement {
+                  arn = statement.value
+                }
+              }
+            }
+          }
         }
       }
 

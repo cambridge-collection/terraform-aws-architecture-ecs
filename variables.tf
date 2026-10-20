@@ -419,6 +419,18 @@ variable "waf_ip_set_addresses" {
   default     = ["131.111.0.0/16"]
 }
 
+variable "waf_ip_set_addresses_ipv6" {
+  type        = list(string)
+  description = "List of IPv6 ranges for the WAF IP Set Safelist. Without these, clients reaching CloudFront over IPv6 are blocked when waf_use_ip_restrictions is true"
+  default     = []
+}
+
+variable "waf_ip_set_allow_first" {
+  type        = bool
+  description = "Whether the IP Set Safelist rule is evaluated first, so its addresses are allowed without the managed rule groups or rate limiting. By default it is evaluated last"
+  default     = false
+}
+
 variable "waf_rate_limit" {
   type        = number
   description = "The limit of requests from a single originating IP address"
