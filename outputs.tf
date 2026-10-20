@@ -33,6 +33,11 @@ output "ecs_capacity_provider_name" {
   description = "Name of the ECS Capacity Provider associated with the Autoscaling Group"
 }
 
+output "ecs_capacity_provider_arn" {
+  value       = aws_ecs_capacity_provider.this.arn
+  description = "ARN of the ECS Capacity Provider associated with the Autoscaling Group"
+}
+
 output "s3_bucket" {
   value       = var.s3_bucket_create ? aws_s3_bucket.this.0.id : ""
   description = "Name of the S3 Bucket"
